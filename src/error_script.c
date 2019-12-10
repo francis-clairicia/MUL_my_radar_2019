@@ -43,8 +43,7 @@ int error_script(char const *script)
         return (1);
     while ((n = my_find_char(script, '\n')) >= 0) {
         nb_lines += 1;
-        line = malloc(sizeof(char) * (n + 1));
-        my_strncpy(line, script, n);
+        line = my_strndup(script, n);
         output = check_line(line);
         free(line);
         if (output == 0)

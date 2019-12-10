@@ -11,32 +11,18 @@
 #include <SFML/Graphics.h>
 #include <stdlib.h>
 
-enum OBJECTS
-{
-    WORLD_MAP,
-    AIRPLANE
-};
-
-typedef struct info
-{
-    char const *filepath;
-    sfIntRect rect;
-    int nb_sprites;
-} info_t;
-
 typedef struct object
 {
     sfTexture *texture;
     sfSprite *sprite;
-    sfIntRect rect;
+    sfFloatRect rect;
+    sfIntRect sprite_rect;
     sfIntRect default_rect;
-    sfVector2f pos;
-    sfVector2f size;
     unsigned int index_sprite;
     unsigned int nb_sprites;
 } object_t;
 
-object_t *create_object(enum OBJECTS obj, float width, float height);
+object_t *create_object(int obj, float width, float height);
 void destroy_object(object_t *object);
 void draw_object(sfRenderWindow *window, object_t *object);
 void animate_object(object_t *object);

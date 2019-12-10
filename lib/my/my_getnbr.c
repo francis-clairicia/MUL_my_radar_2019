@@ -33,9 +33,9 @@ int negative_nb(char const *str, int index_first)
     return (number_of_minus % 2);
 }
 
-long my_getnbr(char const *str)
+int my_getnbr(char const *str)
 {
-    long nb = 0;
+    int nb = 0;
     int digit = 0;
     int i = index_of_first_digit(str);
     int sign = negative_nb(str, i);
@@ -44,9 +44,9 @@ long my_getnbr(char const *str)
         return (0);
     while (str[i] >= '0' && str[i] <= '9') {
         digit = str[i] - 48;
-        if (sign == 0 && (nb <= (9223372036854775807 - digit) / 10))
+        if (sign == 0 && (nb <= (2147483647 - digit) / 10))
             nb = (nb * 10) + digit;
-        else if (sign == 1 && (nb >= (-9223372036854775807 + digit) / 10))
+        else if (sign == 1 && (nb >= (-2147483648 + digit) / 10))
             nb = (nb * 10) - digit;
         else
             return (0);

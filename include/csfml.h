@@ -12,6 +12,7 @@
 #include <SFML/System.h>
 #include <stdlib.h>
 #include "csfml_object.h"
+#include "csfml_spritesheet.h"
 
 typedef struct framebuffer
 {
@@ -29,6 +30,6 @@ void framebuffer_destroy(framebuffer_t *fb);
 void put_pixel(framebuffer_t *f, unsigned int x, unsigned int y, sfColor color);
 void draw_square(framebuffer_t *framebuffer, sfVector2u position,
     unsigned int size, sfColor color);
-int elapsed_time(float seconds, sfClock *clock);
+int elapsed_time(float milliseconds, sfClock *clock);
 
 #endif

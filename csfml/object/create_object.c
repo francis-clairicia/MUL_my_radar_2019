@@ -6,24 +6,28 @@
 */
 
 #include "csfml.h"
+#include "csfml_spritesheet.h"
 
-static const info_t spritesheet[] = {
-    {"img/world_map.jpg", {0, 0, 1920, 1080}, 1},
-    {"img/airplane.png", {0, 0, 465, 465}, 1}
-};
-
-object_t *create_object(enum OBJECTS obj, float width, float height)
+object_t *create_object(int obj, float width, float height)
 {
     info_t info = spritesheet[obj];
     object_t *object = malloc(sizeof(object_t));
-    sfIntRect rect = {0, 0,
-        info.rect.width / info.nb_sprites, info.rect.height};
+    sfIntRect sprite_rect = {0, 0, 0, 0};
 
-    object->texture = sfTexture_createFromFile(info.filepath, &(info.rect));
+    if (info.rect.width > 0 && info.rect.height > 0)
+        object->texture = sfTexture_createFromFile(info.filepath, &(info.rect));
+    else
+        object->texture = sfTexture_createFromFile(info.filepath, NULL);
+    sprite_rect.width = sfTexture_getSize(object->texture).x;
+    sprite_rect.height = sfTexture_getSize(object->texture).y;
     object->sprite = sfSprite_create();
-    object->rect = rect;
+    object->sprite_rect = sprite_rect;
+    object->default_rect = sprite_rect;
     refresh_object(object);
-    resize_object(object, width, height);
+    object->rect = sfSprite_getGlobalBounds(object->sprite);
+    if (width > 0 && height > 0)
+        resize_object(object, width, height);
+    set_pos_object(object, info.position);
     return (object);
 }
 
