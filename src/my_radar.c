@@ -8,8 +8,17 @@
 #include "my_radar.h"
 #include "csfml_spritesheet.h"
 
+static void draw_all(sfRenderWindow *window, object_t *bg, list_t *airplanes)
+{
+    draw_object(window, bg);
+    draw_airplanes(window, airplanes);
+    sfRenderWindow_display(window);
+}
+
 static void analyse_event(sfRenderWindow *window, list_t *airplanes)
 {
+    sfView *view = sfView_copy(sfRenderWindow_getView(window));
+    sfVector2i mouse_pos = sfMouse_getPositionRenderWindow(window);
     sfEvent event;
 
     while (sfRenderWindow_pollEvent(window, &event)) {
@@ -17,7 +26,10 @@ static void analyse_event(sfRenderWindow *window, list_t *airplanes)
             sfRenderWindow_close(window);
         if (event.type == sfEvtKeyReleased)
             event_switch_sprite(event.key, airplanes);
+        handle_view(event, view, mouse_pos);
     }
+    sfRenderWindow_setView(window, view);
+    sfView_destroy(view);
 }
 
 void my_radar(sfRenderWindow *window, char const *script)
@@ -28,14 +40,13 @@ void my_radar(sfRenderWindow *window, char const *script)
     int rotate = 0;
 
     while (sfRenderWindow_isOpen(window)) {
-        sfRenderWindow_clear(window, sfBlack);
-        draw_object(window, world_map);
-        draw_airplanes(window, airplanes);
-        sfRenderWindow_display(window);
+        draw_all(window, world_map, airplanes);
         analyse_event(window, airplanes);
         move_airplanes(airplanes);
         if (elapsed_time(4000, clock) && !rotate) {
+            change_airplane_direction((airplane_t *)(my_node(airplanes, 0)->data), -180);
             change_airplane_direction((airplane_t *)(my_node(airplanes, 1)->data), 45);
+            change_airplane_direction((airplane_t *)(my_node(airplanes, 2)->data), -72);
             rotate = 1;
         }
     }

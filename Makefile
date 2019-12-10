@@ -15,7 +15,8 @@ SRC_NO_TEST	=	$(SRC_DIR)/my_radar.c							\
 				$(SRC_DIR)/destroy_airplanes.c					\
 				$(SRC_DIR)/move_airplanes.c						\
 				$(SRC_DIR)/change_airplane_direction.c			\
-				$(SRC_DIR)/event_switch_sprite.c
+				$(SRC_DIR)/event_switch_sprite.c				\
+				$(SRC_DIR)/view.c
 
 SRC_TEST	=	$(SRC_DIR)/error_script.c
 
@@ -34,7 +35,7 @@ SRC			=	$(SRC_NO_TEST) $(SRC_TEST) $(CSFML)
 
 CFLAGS		=	-I./include/ -Wall -Wextra
 
-LIB			=	-L./lib -lmy -lcsfml-graphics -lcsfml-system -lm
+LIB			=	-L./lib -lmy -lcsfml-graphics -lcsfml-system -lcsfml-window -lm
 
 OBJ			=	$(MAIN:.c=.o) $(SRC:.c=.o)
 

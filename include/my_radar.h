@@ -47,6 +47,7 @@ typedef struct control_tower
 void my_radar(sfRenderWindow *window, char const *script);
 int error_script(char const *script);
 void event_switch_sprite(sfKeyEvent event, list_t *airplanes);
+void handle_view(sfEvent event, sfView *view, sfVector2i mouse_pos);
 
 list_t *load_airplanes(char const *script);
 void draw_airplanes(sfRenderWindow *window, list_t *airplanes);
