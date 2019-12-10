@@ -5,7 +5,6 @@
 ** airplane.c
 */
 
-#include <math.h>
 #include "my_radar.h"
 
 void calculate_airplane_direction(airplane_t *airplane)
@@ -21,8 +20,7 @@ void calculate_airplane_direction(airplane_t *airplane)
     airplane->direction.x = cos(angle);
     airplane->direction.y = sin(angle);
     airplane->angle = angle_in_degrees;
-    while (sfRectangleShape_getRotation(airplane->shape) != angle_in_degrees)
-        sfRectangleShape_rotate(airplane->shape, 1);
+    sfRectangleShape_rotate(airplane->shape, angle_in_degrees);
 }
 
 static void init_airplane_shape(airplane_t *airplane)
@@ -42,6 +40,15 @@ static void init_airplane_shape(airplane_t *airplane)
     sfRectangleShape_setOutlineThickness(airplane->shape, 2);
 }
 
+static void init_default_airplane_value(airplane_t *airplane)
+{
+    airplane->rotation_clock = sfClock_create();
+    airplane->delay_clock = sfClock_create();
+    airplane->move_clock = sfClock_create();
+    airplane->rotate_side = 0;
+    airplane->fly = sfFalse;
+}
+
 static airplane_t *create_airplane(char * const *infos)
 {
     airplane_t *airplane = malloc(sizeof(airplane_t));
@@ -55,14 +62,11 @@ static airplane_t *create_airplane(char * const *infos)
     airplane->departure.y = my_getnbr(infos[2]);
     airplane->arrival.x = my_getnbr(infos[3]);
     airplane->arrival.y = my_getnbr(infos[4]);
-    airplane->speed = my_getnbr(infos[5]);
+    airplane->speed = (float)my_getnbr(infos[5]) / 100;
+    airplane->delay = my_getnbr(infos[6]) * 1000;
     init_airplane_shape(airplane);
     calculate_airplane_direction(airplane);
-    airplane->delay = my_getnbr(infos[6]) * 1000;
-    airplane->rotation_clock = sfClock_create();
-    airplane->delay_clock = sfClock_create();
-    airplane->rotate_side = 0;
-    airplane->fly = sfFalse;
+    init_default_airplane_value(airplane);
     return (airplane);
 }
 

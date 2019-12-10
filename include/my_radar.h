@@ -13,6 +13,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <math.h>
 #include "csfml.h"
 #include "my.h"
 #include "mylist.h"
@@ -23,7 +24,7 @@ typedef struct airplane
     sfTexture *texture;
     sfVector2f departure;
     sfVector2f arrival;
-    unsigned int speed;
+    float speed;
     unsigned int delay;
     sfVector2f direction;
     int angle;
@@ -33,6 +34,7 @@ typedef struct airplane
     int rotate_side;
     sfClock *rotation_clock;
     sfClock *delay_clock;
+    sfClock *move_clock;
     sfBool fly;
 } airplane_t;
 
@@ -50,5 +52,6 @@ list_t *load_airplanes(char const *script);
 void draw_airplanes(sfRenderWindow *window, list_t *airplanes);
 void destroy_airplanes(list_t **airplanes);
 void move_airplanes(list_t *airplanes);
+void change_airplane_direction(airplane_t *airplane, int angle_direction);
 
 #endif

@@ -18,6 +18,7 @@ void destroy_airplanes(list_t **airplanes)
         sfTexture_destroy(airplane->texture);
         sfClock_destroy(airplane->rotation_clock);
         sfClock_destroy(airplane->delay_clock);
+        sfClock_destroy(airplane->move_clock);
         node = node->next;
     }
     my_free_list(airplanes, 1);

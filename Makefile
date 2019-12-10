@@ -9,11 +9,12 @@ MAIN		=	main.c
 
 SRC_DIR		=	src
 
-SRC_NO_TEST	=	$(SRC_DIR)/my_radar.c				\
-				$(SRC_DIR)/load_airplanes.c			\
-				$(SRC_DIR)/draw_airplanes.c			\
-				$(SRC_DIR)/destroy_airplanes.c		\
-				$(SRC_DIR)/move_airplanes.c			\
+SRC_NO_TEST	=	$(SRC_DIR)/my_radar.c							\
+				$(SRC_DIR)/load_airplanes.c						\
+				$(SRC_DIR)/draw_airplanes.c						\
+				$(SRC_DIR)/destroy_airplanes.c					\
+				$(SRC_DIR)/move_airplanes.c						\
+				$(SRC_DIR)/change_airplane_direction.c			\
 				$(SRC_DIR)/event_switch_sprite.c
 
 SRC_TEST	=	$(SRC_DIR)/error_script.c
