@@ -22,7 +22,9 @@ static void analyse_event(sfRenderWindow *window, list_t *airplanes)
     sfEvent event;
 
     while (sfRenderWindow_pollEvent(window, &event)) {
-        if (event.type == sfEvtClosed)
+        if (event.type == sfEvtClosed
+        || (event.type == sfEvtKeyReleased
+        && (event.key.code == sfKeyQ || event.key.code == sfKeyEscape)))
             sfRenderWindow_close(window);
         if (event.type == sfEvtKeyReleased)
             event_switch_sprite(event.key, airplanes);
@@ -37,17 +39,22 @@ void my_radar(sfRenderWindow *window, char const *script)
     object_t *world_map = create_object(WORLD_MAP, 0, 0);
     list_t *airplanes = load_airplanes(script);
     sfClock *clock = sfClock_create();
-    int rotate = 0;
+    int rotated = 0;
 
     while (sfRenderWindow_isOpen(window)) {
         draw_all(window, world_map, airplanes);
         analyse_event(window, airplanes);
         move_airplanes(airplanes);
-        if (elapsed_time(4000, clock) && !rotate) {
+        if (elapsed_time(4000, clock) && !rotated) {
             change_airplane_direction((airplane_t *)(my_node(airplanes, 0)->data), -180);
             change_airplane_direction((airplane_t *)(my_node(airplanes, 1)->data), 45);
             change_airplane_direction((airplane_t *)(my_node(airplanes, 2)->data), -72);
-            rotate = 1;
+            rotated = 1;
+        } else if (rotated == 1 && elapsed_time(3000, clock)) {
+            head_for_arrival((airplane_t *)(my_node(airplanes, 0)->data));
+            head_for_arrival((airplane_t *)(my_node(airplanes, 1)->data));
+            head_for_arrival((airplane_t *)(my_node(airplanes, 2)->data));
+            rotated = 2;
         }
     }
     destroy_object(world_map);

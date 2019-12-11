@@ -21,7 +21,7 @@ static void handle_zoom(sfMouseWheelScrollEvent event, sfView *view)
         center.x = size.x / 2;
     if (center.y - (size.y / 2) < 0)
         center.y = size.y / 2;
-    if (center.x + (size.y / 2) > 1920)
+    if (center.x + (size.x / 2) > 1920)
         center.x = 1920 - (size.x / 2);
     if (center.y + (size.y / 2) > 1080)
         center.y = 1080 - (size.y / 2);

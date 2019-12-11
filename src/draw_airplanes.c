@@ -13,7 +13,11 @@ void draw_airplanes(sfRenderWindow *window, list_t *airplanes)
 
     while (airplanes != NULL) {
         airplane = (airplane_t *)(airplanes->data);
-        sfRenderWindow_drawRectangleShape(window, airplane->shape, NULL);
+        if (airplane == NULL) {
+            airplanes = airplanes->next;
+            continue;
+        } if (airplane->fly)
+            sfRenderWindow_drawRectangleShape(window, airplane->shape, NULL);
         airplanes = airplanes->next;
     }
 }

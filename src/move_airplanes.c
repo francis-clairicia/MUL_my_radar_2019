@@ -9,29 +9,38 @@
 
 static void refresh_director_vector(airplane_t *airplane)
 {
-    double angle_in_degrees;
-    double angle_in_radians;
+    float angle;
+    sfVector2f pos = sfRectangleShape_getPosition(airplane->shape);
 
     sfRectangleShape_rotate(airplane->shape, airplane->rotate_side);
-    angle_in_degrees = sfRectangleShape_getRotation(airplane->shape);
-    angle_in_radians = angle_in_degrees * acos(-1) / 180;
-    airplane->direction.x = cos(angle_in_radians);
-    airplane->direction.y = sin(angle_in_radians);
+    if (airplane->rotate_offset > 0)
+        airplane->rotate_offset -= 1;
+    angle = sfRectangleShape_getRotation(airplane->shape);
+    airplane->direction.x = cos(to_radians(angle));
+    airplane->direction.y = sin(to_radians(angle));
+    if (airplane->rotate_offset != 0)
+        return;
+    if (airplane->head_for_arrival) {
+        if (point_on_line(pos, airplane->direction, airplane->arrival))
+            calculate_airplane_direction(airplane, sfFalse);
+        return;
+    }
+    airplane->rotate_side = 0;
 }
 
 static void move_airplane(airplane_t *airplane)
 {
     sfVector2f offset;
 
-    if (elapsed_time(airplane->delay, airplane->delay_clock))
+    if (airplane == NULL)
+        return;
+    if (elapsed_time(airplane->delay * 1000, airplane->delay_clock))
         airplane->fly = sfTrue;
     if (!(airplane->fly))
         return;
-    if (sfRectangleShape_getRotation(airplane->shape) != airplane->angle) {
+    if (airplane->rotate_side != 0) {
         if (elapsed_time(10, airplane->rotation_clock))
             refresh_director_vector(airplane);
-        if (sfRectangleShape_getRotation(airplane->shape) == airplane->angle)
-            airplane->rotate_side = 0;
     }
     if (elapsed_time(10, airplane->move_clock)) {
         offset.x = airplane->speed * airplane->direction.x;

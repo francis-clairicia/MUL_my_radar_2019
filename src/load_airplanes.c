@@ -7,22 +7,6 @@
 
 #include "my_radar.h"
 
-void calculate_airplane_direction(airplane_t *airplane)
-{
-    sfVector2f director_v = {
-        airplane->arrival.x - airplane->departure.x,
-        airplane->arrival.y - airplane->departure.y
-    };
-    double norm_v = sqrt(pow(director_v.x, 2) + pow(director_v.y, 2));
-    double angle = acos(director_v.x / norm_v);
-    int angle_in_degrees = angle * 180 / acos(-1);
-
-    airplane->direction.x = cos(angle);
-    airplane->direction.y = sin(angle);
-    airplane->angle = angle_in_degrees;
-    sfRectangleShape_rotate(airplane->shape, angle_in_degrees);
-}
-
 static void init_airplane_shape(airplane_t *airplane)
 {
     sfVector2u sprite_size = sfTexture_getSize(airplane->texture);
@@ -42,11 +26,14 @@ static void init_airplane_shape(airplane_t *airplane)
 
 static void init_default_airplane_value(airplane_t *airplane)
 {
+    airplane->angle = 0;
+    airplane->rotate_offset = 0;
     airplane->rotation_clock = sfClock_create();
     airplane->delay_clock = sfClock_create();
     airplane->move_clock = sfClock_create();
     airplane->rotate_side = 0;
     airplane->fly = sfFalse;
+    airplane->head_for_arrival = sfFalse;
 }
 
 static airplane_t *create_airplane(char * const *infos)
@@ -63,10 +50,10 @@ static airplane_t *create_airplane(char * const *infos)
     airplane->arrival.x = my_getnbr(infos[3]);
     airplane->arrival.y = my_getnbr(infos[4]);
     airplane->speed = (float)my_getnbr(infos[5]) / 100;
-    airplane->delay = my_getnbr(infos[6]) * 1000;
+    airplane->delay = my_getnbr(infos[6]);
     init_airplane_shape(airplane);
-    calculate_airplane_direction(airplane);
     init_default_airplane_value(airplane);
+    calculate_airplane_direction(airplane, sfFalse);
     return (airplane);
 }
 

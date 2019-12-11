@@ -14,11 +14,13 @@ SRC_NO_TEST	=	$(SRC_DIR)/my_radar.c							\
 				$(SRC_DIR)/draw_airplanes.c						\
 				$(SRC_DIR)/destroy_airplanes.c					\
 				$(SRC_DIR)/move_airplanes.c						\
-				$(SRC_DIR)/change_airplane_direction.c			\
+				$(SRC_DIR)/airplane_direction.c					\
 				$(SRC_DIR)/event_switch_sprite.c				\
 				$(SRC_DIR)/view.c
 
-SRC_TEST	=	$(SRC_DIR)/error_script.c
+SRC_TEST	=	$(SRC_DIR)/error_script.c			\
+				$(SRC_DIR)/vector.c					\
+				$(SRC_DIR)/angle.c
 
 CSFML		=	csfml/framebuffer.c				\
 				csfml/create_window.c			\
