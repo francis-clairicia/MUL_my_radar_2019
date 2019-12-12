@@ -10,22 +10,21 @@
 static void refresh_director_vector(airplane_t *airplane)
 {
     float angle;
-    sfVector2f pos = sfRectangleShape_getPosition(airplane->shape);
 
     sfRectangleShape_rotate(airplane->shape, airplane->rotate_side);
     if (airplane->rotate_offset > 0)
         airplane->rotate_offset -= 1;
     angle = sfRectangleShape_getRotation(airplane->shape);
+    airplane->angle = angle;
     airplane->direction.x = cos(to_radians(angle));
     airplane->direction.y = sin(to_radians(angle));
-    if (airplane->rotate_offset != 0)
-        return;
     if (airplane->head_for_arrival) {
-        if (point_on_line(pos, airplane->direction, airplane->arrival))
+        if (abs((int)(angle - airplane->direction_to_arrival)) <= 1)
             calculate_airplane_direction(airplane, sfFalse);
         return;
     }
-    airplane->rotate_side = 0;
+    if (airplane->rotate_offset == 0)
+        airplane->rotate_side = 0;
 }
 
 static void move_airplane(airplane_t *airplane)

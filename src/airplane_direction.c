@@ -7,27 +7,18 @@
 
 #include "my_radar.h"
 
-void determine_rotate_side(airplane_t *airplane, int former_angle)
+static void determine_rotate_side(airplane_t *airplane, float former_angle)
 {
-    int new_angle = airplane->angle;
-    int former_angle_2 = former_angle;
-    unsigned int r_clockwise = 0;
-    unsigned int r_counter_clockwise = 0;
+    float new_angle = airplane->angle;
+    int rotate_offset = new_angle - former_angle;
 
-    while (former_angle != new_angle) {
-        r_clockwise += 1;
-        former_angle = conditionate_angle(former_angle + 1);
-    }
-    while (former_angle_2 != new_angle) {
-        r_counter_clockwise += 1;
-        former_angle_2 = conditionate_angle(former_angle_2 - 1);
-    }
-    airplane->rotate_side = (r_counter_clockwise > r_clockwise) ? 1 : -1;
-    airplane->rotate_offset = (airplane->rotate_side == 1) ?
-    r_clockwise : r_counter_clockwise;
+    airplane->rotate_side = rotate_offset / abs(rotate_offset);
+    if (abs(rotate_offset) >= 180)
+        airplane->rotate_side *= -1;
+    airplane->rotate_offset = abs(rotate_offset);
 }
 
-float get_airplane_direction(airplane_t *airplane)
+static void get_airplane_direction(airplane_t *airplane)
 {
     sfVector2f pos = sfRectangleShape_getPosition(airplane->shape);
     sfVector2f director_v = {
@@ -38,27 +29,28 @@ float get_airplane_direction(airplane_t *airplane)
     float angle = acos(director_v.x / norm_v);
     float angle_in_degrees;
 
-    if (airplane->arrival.y < pos.y)
-        angle += 2 * sin(angle);
+    if (airplane->arrival.y < pos.y) {
+        angle = asin(sin(-angle));
+        if (airplane->arrival.x < pos.x)
+            angle -= 2 * cos(angle);
+    }
     angle_in_degrees = conditionate_angle(to_degrees(angle));
     airplane->direction.x = cos(angle);
     airplane->direction.y = sin(angle);
-    airplane->angle = (-sin(angle) >= 0) ?
-    angle_in_degrees : 360 - angle_in_degrees;
-    return (angle_in_degrees);
+    airplane->angle = angle_in_degrees;
+    airplane->direction_to_arrival = angle_in_degrees;
 }
 
 void calculate_airplane_direction(airplane_t *airplane, sfBool animation)
 {
-    int f_angle = airplane->angle;
-    float sprite_angle;
+    float f_angle = airplane->angle;
 
-    sprite_angle = get_airplane_direction(airplane);
+    get_airplane_direction(airplane);
     airplane->head_for_arrival = sfTrue;
     if (animation) {
         determine_rotate_side(airplane, f_angle);
     } else {
-        sfRectangleShape_setRotation(airplane->shape, sprite_angle);
+        sfRectangleShape_setRotation(airplane->shape, airplane->angle);
         airplane->rotate_side = 0;
     }
 }

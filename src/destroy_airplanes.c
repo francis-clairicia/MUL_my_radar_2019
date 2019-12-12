@@ -16,7 +16,6 @@ void destroy_airplanes(list_t **airplanes)
         airplane = (airplane_t *)(node->data);
         sfRectangleShape_destroy(airplane->shape);
         sfTexture_destroy(airplane->texture);
-        sfClock_destroy(airplane->rotation_clock);
         sfClock_destroy(airplane->delay_clock);
         sfClock_destroy(airplane->move_clock);
         node = node->next;
