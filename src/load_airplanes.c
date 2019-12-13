@@ -9,18 +9,17 @@
 
 static void init_airplane_shape(airplane_t *airplane)
 {
-    sfVector2u sprite_size = sfTexture_getSize(airplane->texture);
-    sfVector2f shape_size = {sprite_size.x, sprite_size.y};
-    sfVector2f origin = {sprite_size.x / 2, sprite_size.y / 2};
+    sfVector2f shape_size = {20, 20};
+    sfVector2f origin = {10, 10};
+    sfColor color = sfColor_fromRGB(46, 173, 46);
 
     sfRectangleShape_setSize(airplane->shape, shape_size);
     sfRectangleShape_setTexture(airplane->shape, airplane->texture, sfFalse);
     airplane->show_sprite = sfTrue;
     sfRectangleShape_setOrigin(airplane->shape, origin);
     sfRectangleShape_setPosition(airplane->shape, airplane->departure);
-    airplane->outline_color = sfColor_fromRGB(46, 173, 46);
     airplane->outline = sfTrue;
-    sfRectangleShape_setOutlineColor(airplane->shape, airplane->outline_color);
+    sfRectangleShape_setOutlineColor(airplane->shape, color);
     sfRectangleShape_setOutlineThickness(airplane->shape, 2);
 }
 
@@ -31,9 +30,11 @@ static void init_default_airplane_value(airplane_t *airplane)
     airplane->rotation_clock = sfClock_create();
     airplane->delay_clock = sfClock_create();
     airplane->move_clock = sfClock_create();
+    airplane->head_for_arrival_clock = sfClock_create();
+    airplane->delay_before_readjustement = 0;
     airplane->rotate_side = 0;
     airplane->fly = sfFalse;
-    airplane->head_for_arrival = sfFalse;
+    airplane->head_for_arrival = sfTrue;
 }
 
 static airplane_t *create_airplane(char * const *infos)

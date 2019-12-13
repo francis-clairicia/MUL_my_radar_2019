@@ -21,12 +21,14 @@ typedef struct info
 enum OBJECTS
 {
     WORLD_MAP,
-    AIRPLANE
+    AIRPLANE,
+    TOWER
 };
 
 static const info_t spritesheet[] = {
     {"img/world_map.jpg", {0, 0, 0, 0}, {0, 0}, 1},
-    {"img/airplane.png", {0, 0, 0, 0}, {0, 0}, 1}
+    {"img/airplane.png", {0, 0, 0, 0}, {0, 0}, 1},
+    {"img/tower.png", {0, 0, 0, 0}, {0, 0}, 1}
 };
 
 #endif

@@ -7,15 +7,17 @@
 
 #include "my_radar.h"
 
-static void handle_zoom(sfMouseWheelScrollEvent event, sfView *view)
+static int handle_zoom(sfMouseWheelScrollEvent event, sfView *view)
 {
-    float zoom = (event.delta == 1.f) ? 1.1 : 0.9;
+    float zoom = (event.delta == 1.f) ? 0.9 : 1.1;
     sfVector2f size = sfView_getSize(view);
     sfVector2f center;
 
-    if (size.x * zoom <= 1920 && size.x * zoom > 0)
+    if (size.x * zoom > 100)
         sfView_zoom(view, zoom);
     size = sfView_getSize(view);
+    if (size.x >= 1920.f || size.y >= 1080.f)
+        return (1);
     center = sfView_getCenter(view);
     if (center.x - (size.x / 2) < 0)
         center.x = size.x / 2;
@@ -26,6 +28,7 @@ static void handle_zoom(sfMouseWheelScrollEvent event, sfView *view)
     if (center.y + (size.y / 2) > 1080)
         center.y = 1080 - (size.y / 2);
     sfView_setCenter(view, center);
+    return (0);
 }
 
 static void handle_move(sfMouseMoveEvent event, sfView *view,
@@ -45,10 +48,13 @@ static void handle_move(sfMouseMoveEvent event, sfView *view,
         sfView_move(view, offset);
 }
 
-void handle_view(sfEvent event, sfView *view, sfVector2i mouse_pos)
+sfBool handle_view(sfEvent event, sfView *view, sfVector2i mouse_pos)
 {
+    sfBool use_default = 0;
+
     if (event.type == sfEvtMouseWheelScrolled)
-        handle_zoom(event.mouseWheelScroll, view);
+        use_default = handle_zoom(event.mouseWheelScroll, view);
     if (event.type == sfEvtMouseMoved && sfMouse_isButtonPressed(sfMouseLeft))
         handle_move(event.mouseMove, view, mouse_pos);
+    return (use_default);
 }

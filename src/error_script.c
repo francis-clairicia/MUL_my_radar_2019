@@ -14,7 +14,7 @@ static int check_numbers_in_line(char type, char const *line)
     int max_space = (type == 'A') ? 5 : 2;
 
     while (line[i] != '\0') {
-        if (line[i] == ' ')
+        if (line[i] == ' ' || line[i] == '\t')
             nb_space += 1;
         else if (my_find_char("0123456789", line[i]) < 0)
             return (1);

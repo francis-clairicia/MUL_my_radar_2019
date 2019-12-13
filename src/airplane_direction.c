@@ -18,7 +18,7 @@ static void determine_rotate_side(airplane_t *airplane, float former_angle)
     airplane->rotate_offset = abs(rotate_offset);
 }
 
-static void get_airplane_direction(airplane_t *airplane)
+float get_airplane_direction(airplane_t *airplane)
 {
     sfVector2f pos = sfRectangleShape_getPosition(airplane->shape);
     sfVector2f director_v = {
@@ -29,44 +29,47 @@ static void get_airplane_direction(airplane_t *airplane)
     float angle = acos(director_v.x / norm_v);
     float angle_in_degrees;
 
-    if (airplane->arrival.y < pos.y) {
-        angle = asin(sin(-angle));
-        if (airplane->arrival.x < pos.x)
-            angle -= 2 * cos(angle);
-    }
+    if (airplane->arrival.y < pos.y)
+        angle = -angle;
     angle_in_degrees = conditionate_angle(to_degrees(angle));
-    airplane->direction.x = cos(angle);
-    airplane->direction.y = sin(angle);
     airplane->angle = angle_in_degrees;
     airplane->direction_to_arrival = angle_in_degrees;
+    return (angle);
 }
 
 void calculate_airplane_direction(airplane_t *airplane, sfBool animation)
 {
     float f_angle = airplane->angle;
+    float d_angle;
 
-    get_airplane_direction(airplane);
-    airplane->head_for_arrival = sfTrue;
+    d_angle = get_airplane_direction(airplane);
     if (animation) {
+        airplane->head_for_arrival = sfTrue;
         determine_rotate_side(airplane, f_angle);
     } else {
+        airplane->direction.x = cos(d_angle);
+        airplane->direction.y = sin(d_angle);
         sfRectangleShape_setRotation(airplane->shape, airplane->angle);
         airplane->rotate_side = 0;
     }
 }
 
-void change_airplane_direction(airplane_t *airplane, int angle_direction)
+void change_airplane_direction(airplane_t *airplane,
+    float angle_direction, float delay)
 {
     float (*c_angle)(float) = conditionate_angle;
     int angle = airplane->angle;
 
     airplane->angle = c_angle(airplane->angle + angle_direction);
     determine_rotate_side(airplane, angle);
-    airplane->rotate_offset = abs(angle_direction);
+    airplane->rotate_offset = abs((int)angle_direction);
     airplane->head_for_arrival = sfFalse;
+    sfClock_restart(airplane->head_for_arrival_clock);
+    airplane->delay_before_readjustement = delay * 1000;
 }
 
 void head_for_arrival(airplane_t *airplane)
 {
     calculate_airplane_direction(airplane, sfTrue);
+    airplane->delay_before_readjustement = 0;
 }

@@ -33,7 +33,6 @@ typedef struct airplane
     sfVector2f direction;
     float angle;
     float direction_to_arrival;
-    sfColor outline_color;
     sfBool outline;
     sfBool show_sprite;
     int rotate_side;
@@ -42,27 +41,36 @@ typedef struct airplane
     sfClock *rotation_clock;
     sfClock *delay_clock;
     sfClock *move_clock;
+    sfClock *head_for_arrival_clock;
+    unsigned int delay_before_readjustement;
     sfBool fly;
 } airplane_t;
 
 typedef struct control_tower
 {
-    sfVector2f position;
-    unsigned int radius;
+    object_t *object;
+    float radius;
+    sfCircleShape *area;
 } tower_t;
 
 void my_radar(sfRenderWindow *window, char const *script);
 int error_script(char const *script);
 void event_switch_sprite(sfKeyEvent event, list_t *airplanes);
-void handle_view(sfEvent event, sfView *view, sfVector2i mouse_pos);
+sfBool handle_view(sfEvent event, sfView *view, sfVector2i mouse_pos);
 
 list_t *load_airplanes(char const *script);
 void draw_airplanes(sfRenderWindow *window, list_t *airplanes);
 void destroy_airplanes(list_t **airplanes);
 void move_airplanes(list_t *airplanes);
+float get_airplane_direction(airplane_t *airplane);
 void calculate_airplane_direction(airplane_t *airplane, sfBool animation);
-void change_airplane_direction(airplane_t *airplane, int angle_direction);
+void change_airplane_direction(airplane_t *airplane,
+    float angle_direction, float delay);
 void head_for_arrival(airplane_t *airplane);
+
+list_t *load_towers(char const *script);
+void draw_towers(sfRenderWindow *window, list_t *towers);
+void destroy_towers(list_t **towers);
 
 float to_degrees(float radians);
 float to_radians(float degrees);

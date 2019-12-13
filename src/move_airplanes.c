@@ -7,6 +7,11 @@
 
 #include "my_radar.h"
 
+static float abs_float(float x)
+{
+    return ((x < 0) ? -x : x);
+}
+
 static void refresh_director_vector(airplane_t *airplane)
 {
     float angle;
@@ -19,7 +24,7 @@ static void refresh_director_vector(airplane_t *airplane)
     airplane->direction.x = cos(to_radians(angle));
     airplane->direction.y = sin(to_radians(angle));
     if (airplane->head_for_arrival) {
-        if (abs((int)(angle - airplane->direction_to_arrival)) <= 1)
+        if (abs_float(angle - airplane->direction_to_arrival) <= 1)
             calculate_airplane_direction(airplane, sfFalse);
         return;
     }
@@ -33,11 +38,8 @@ static void move_airplane(airplane_t *airplane)
 
     if (airplane == NULL)
         return;
-    if (elapsed_time(airplane->delay * 1000, airplane->delay_clock))
-        airplane->fly = sfTrue;
-    if (!(airplane->fly))
-        return;
     if (airplane->rotate_side != 0) {
+        get_airplane_direction(airplane);
         if (elapsed_time(10, airplane->rotation_clock))
             refresh_director_vector(airplane);
     }
@@ -50,8 +52,18 @@ static void move_airplane(airplane_t *airplane)
 
 void move_airplanes(list_t *airplanes)
 {
+    airplane_t *airplane;
+
     while (airplanes != NULL) {
-        move_airplane((airplane_t *)(airplanes->data));
+        airplane = (airplane_t *)(airplanes->data);
+        if (elapsed_time(airplane->delay * 1000, airplane->delay_clock))
+            airplane->fly = sfTrue;
+        if (airplane->fly)
+            move_airplane(airplane);
+        if (airplane->delay_before_readjustement > 0
+        && elapsed_time(airplane->delay_before_readjustement,
+        airplane->head_for_arrival_clock))
+            head_for_arrival(airplane);
         airplanes = airplanes->next;
     }
 }

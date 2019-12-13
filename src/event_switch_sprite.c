@@ -10,7 +10,7 @@
 void event_switch_sprite(sfKeyEvent event, list_t *airplanes)
 {
     airplane_t *airplane;
-    sfColor o_color;
+    int outline;
     sfColor f_color;
 
     while (airplanes != NULL) {
@@ -20,9 +20,9 @@ void event_switch_sprite(sfKeyEvent event, list_t *airplanes)
         if (event.code == sfKeyS)
             airplane->show_sprite = !(airplane->show_sprite);
         f_color = (airplane->show_sprite) ? sfWhite : sfTransparent;
-        o_color = (airplane->outline) ? airplane->outline_color : sfTransparent;
+        outline = 2 * (airplane->outline);
         sfRectangleShape_setFillColor(airplane->shape, f_color);
-        sfRectangleShape_setOutlineColor(airplane->shape, o_color);
+        sfRectangleShape_setOutlineThickness(airplane->shape, outline);
         airplanes = airplanes->next;
     }
 }
