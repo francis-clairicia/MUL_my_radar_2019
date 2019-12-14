@@ -29,11 +29,13 @@ static tower_t *create_tower(char * const *infos)
 
     if (tower == NULL)
         return (NULL);
-    tower->object = create_object(TOWER, 0, 0);
+    tower->object = create_object(TOWER);
     pos.x = my_getnbr(infos[1]);
     pos.y = my_getnbr(infos[2]);
     tower->radius = 1920.0 * ((float)my_getnbr(infos[3]) / 100.0);
     tower->area = sfCircleShape_create();
+    tower->show_area = sfTrue;
+    tower->show_sprite = sfTrue;
     init_default_values(tower, pos);
     return (tower);
 }

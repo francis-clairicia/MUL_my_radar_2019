@@ -17,8 +17,10 @@ void draw_towers(sfRenderWindow *window, list_t *towers)
             towers = towers->next;
             continue;
         }
-        sfRenderWindow_drawCircleShape(window, tower->area, NULL);
-        draw_object(window, tower->object);
+        if (tower->show_area)
+            sfRenderWindow_drawCircleShape(window, tower->area, NULL);
+        if (tower->show_sprite)
+            draw_object(window, tower->object);
         towers = towers->next;
     }
 }

@@ -8,7 +8,7 @@
 #ifndef CSFML_SPRITESHEET
 #define CSFML_SPRITESHEET
 
-#include "csfml_object.h"
+#include <SFML/Graphics.h>
 
 typedef struct info
 {

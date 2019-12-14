@@ -25,3 +25,8 @@ float conditionate_angle(float angle)
         angle -= 360;
     return (angle);
 }
+
+float abs_float(float x)
+{
+    return ((x < 0) ? -x : x);
+}

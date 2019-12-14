@@ -8,11 +8,6 @@
 #ifndef HEADER_MY_RADAR
 #define HEADER_MY_RADAR
 
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <fcntl.h>
 #include <math.h>
 #include "csfml.h"
 #include "my.h"
@@ -24,8 +19,8 @@
 
 typedef struct airplane
 {
+    object_t *object;
     sfRectangleShape *shape;
-    sfTexture *texture;
     sfVector2f departure;
     sfVector2f arrival;
     float speed;
@@ -51,21 +46,23 @@ typedef struct control_tower
     object_t *object;
     float radius;
     sfCircleShape *area;
+    sfBool show_area;
+    sfBool show_sprite;
 } tower_t;
 
 void my_radar(sfRenderWindow *window, char const *script);
 int error_script(char const *script);
-void event_switch_sprite(sfKeyEvent event, list_t *airplanes);
+void event_switch_sprite(sfKeyEvent event, list_t *airplanes, list_t *towers);
 sfBool handle_view(sfEvent event, sfView *view, sfVector2i mouse_pos);
 
 list_t *load_airplanes(char const *script);
 void draw_airplanes(sfRenderWindow *window, list_t *airplanes);
 void destroy_airplanes(list_t **airplanes);
 void move_airplanes(list_t *airplanes);
-float get_airplane_direction(airplane_t *airplane);
-void calculate_airplane_direction(airplane_t *airplane, sfBool animation);
+float get_arrival_direction(airplane_t *airplane);
+void set_direction_to_arrival(airplane_t *airplane);
 void change_airplane_direction(airplane_t *airplane,
-    float angle_direction, float delay);
+    float rotate_offset, float delay);
 void head_for_arrival(airplane_t *airplane);
 
 list_t *load_towers(char const *script);
@@ -74,8 +71,9 @@ void destroy_towers(list_t **towers);
 
 float to_degrees(float radians);
 float to_radians(float degrees);
-
 float conditionate_angle(float angle);
+float abs_float(float x);
+
 sfVector2f vector(sfVector2f point_a, sfVector2f point_b);
 int is_colinear(sfVector2f vector_u, sfVector2f vector_v);
 int point_on_line(sfVector2f p_a, sfVector2f u, sfVector2f point_to_check);

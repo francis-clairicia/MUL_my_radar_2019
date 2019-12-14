@@ -7,11 +7,6 @@
 
 #include "my_radar.h"
 
-static float abs_float(float x)
-{
-    return ((x < 0) ? -x : x);
-}
-
 static void refresh_director_vector(airplane_t *airplane)
 {
     float angle;
@@ -24,11 +19,9 @@ static void refresh_director_vector(airplane_t *airplane)
     airplane->direction.x = cos(to_radians(angle));
     airplane->direction.y = sin(to_radians(angle));
     if (airplane->head_for_arrival) {
-        if (abs_float(angle - airplane->direction_to_arrival) <= 1)
-            calculate_airplane_direction(airplane, sfFalse);
-        return;
-    }
-    if (airplane->rotate_offset == 0)
+        if (abs_float(angle - get_arrival_direction(airplane)) <= 0.5)
+            set_direction_to_arrival(airplane);
+    } else if (airplane->rotate_offset == 0)
         airplane->rotate_side = 0;
 }
 
@@ -39,7 +32,6 @@ static void move_airplane(airplane_t *airplane)
     if (airplane == NULL)
         return;
     if (airplane->rotate_side != 0) {
-        get_airplane_direction(airplane);
         if (elapsed_time(10, airplane->rotation_clock))
             refresh_director_vector(airplane);
     }

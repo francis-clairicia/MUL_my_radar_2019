@@ -8,6 +8,10 @@
 #ifndef HEADER_MY_H
 #define HEADER_MY_H
 
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -53,6 +57,7 @@ char *my_nbr_to_str(int nb);
 int my_nbr_len(long nb);
 int my_find_char(char const *str, char c);
 char *convert_base(char const *nbr, char const *base_from, char const *base_to);
+char *open_file(char const *filepath, int (*error)(char const *));
 
 int index_of_first_digit(char const *str);
 int index_of_first_digit_base(char const *str, char const *base);

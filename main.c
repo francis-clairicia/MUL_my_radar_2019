@@ -7,24 +7,6 @@
 
 #include "my_radar.h"
 
-static char *open_script(char const *script_path)
-{
-    int fd = open(script_path, O_RDONLY);
-    struct stat statbuf;
-    char *script;
-    int size;
-
-    if (fstat(fd, &statbuf) == -1)
-        return (NULL);
-    script = malloc(sizeof(char) * (statbuf.st_size + 1));
-    if (script != NULL) {
-        size = read(fd, script, statbuf.st_size);
-        script[size] = 0;
-    }
-    close(fd);
-    return (script);
-}
-
 static int valid_script(char const *script_path)
 {
     int dot = my_find_char(script_path,  '.');
@@ -56,8 +38,8 @@ int main(int ac, char **av, char **envp)
 
     if ((ac != 2) || !valid_environment(envp) || !valid_script(av[1]))
         return (84);
-    script = open_script(av[1]);
-    if (!error_script(script)) {
+    script = open_file(av[1], &error_script);
+    if (script != NULL) {
         window = create_window("My Radar", 1920, 1080);
         my_radar(window, script);
         sfRenderWindow_destroy(window);

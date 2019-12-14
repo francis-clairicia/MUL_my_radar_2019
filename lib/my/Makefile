@@ -57,7 +57,8 @@ SRC	=	my_put_nbr.c				\
 		my_node.c					\
 		my_delete_node.c			\
 		my_nbr_to_str.c				\
-		my_nbr_len.c
+		my_nbr_len.c				\
+		open_file.c
 
 CFLAGS	=	-I. -Wall -Wextra -Werror
 

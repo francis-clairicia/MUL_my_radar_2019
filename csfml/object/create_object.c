@@ -8,7 +8,7 @@
 #include "csfml.h"
 #include "csfml_spritesheet.h"
 
-object_t *create_object(int obj, float width, float height)
+object_t *create_object(enum OBJECTS obj)
 {
     info_t info = spritesheet[obj];
     object_t *object = malloc(sizeof(object_t));
@@ -24,9 +24,6 @@ object_t *create_object(int obj, float width, float height)
     object->sprite_rect = sprite_rect;
     object->default_rect = sprite_rect;
     refresh_object(object);
-    object->rect = sfSprite_getGlobalBounds(object->sprite);
-    if (width > 0 && height > 0)
-        resize_object(object, width, height);
     set_pos_object(object, info.position);
     return (object);
 }

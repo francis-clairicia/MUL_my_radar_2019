@@ -32,7 +32,6 @@ CSFML		=	csfml/framebuffer.c				\
 				csfml/clock.c					\
 				csfml/object/create_object.c	\
 				csfml/object/animate_object.c	\
-				csfml/object/resize_object.c	\
 				csfml/object/move_object.c		\
 				csfml/object/draw_object.c
 

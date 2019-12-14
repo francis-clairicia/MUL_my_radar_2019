@@ -14,11 +14,11 @@ static void init_airplane_shape(airplane_t *airplane)
     sfColor color = sfColor_fromRGB(46, 173, 46);
 
     sfRectangleShape_setSize(airplane->shape, shape_size);
-    sfRectangleShape_setTexture(airplane->shape, airplane->texture, sfFalse);
     airplane->show_sprite = sfTrue;
     sfRectangleShape_setOrigin(airplane->shape, origin);
     sfRectangleShape_setPosition(airplane->shape, airplane->departure);
     airplane->outline = sfTrue;
+    sfRectangleShape_setFillColor(airplane->shape, sfTransparent);
     sfRectangleShape_setOutlineColor(airplane->shape, color);
     sfRectangleShape_setOutlineThickness(airplane->shape, 2);
 }
@@ -40,12 +40,11 @@ static void init_default_airplane_value(airplane_t *airplane)
 static airplane_t *create_airplane(char * const *infos)
 {
     airplane_t *airplane = malloc(sizeof(airplane_t));
-    char const *img = spritesheet[AIRPLANE].filepath;
 
     if (airplane == NULL)
         return (NULL);
+    airplane->object = create_object(AIRPLANE);
     airplane->shape = sfRectangleShape_create();
-    airplane->texture = sfTexture_createFromFile(img, NULL);
     airplane->departure.x = my_getnbr(infos[1]);
     airplane->departure.y = my_getnbr(infos[2]);
     airplane->arrival.x = my_getnbr(infos[3]);
@@ -54,7 +53,7 @@ static airplane_t *create_airplane(char * const *infos)
     airplane->delay = my_getnbr(infos[6]);
     init_airplane_shape(airplane);
     init_default_airplane_value(airplane);
-    calculate_airplane_direction(airplane, sfFalse);
+    set_direction_to_arrival(airplane);
     return (airplane);
 }
 

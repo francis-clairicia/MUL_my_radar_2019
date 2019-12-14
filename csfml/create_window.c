@@ -10,7 +10,7 @@
 sfRenderWindow *create_window(char const *title, int width, int height)
 {
     sfVideoMode v_mod = {width, height, 32};
-    sfUint32 style = sfDefaultStyle;
+    sfUint32 style = sfTitlebar | sfClose | sfFullscreen;
     sfRenderWindow *w = sfRenderWindow_create(v_mod, title, style, NULL);
 
     sfRenderWindow_setFramerateLimit(w, 60);

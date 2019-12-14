@@ -7,11 +7,23 @@
 
 #include "my_radar.h"
 
-void event_switch_sprite(sfKeyEvent event, list_t *airplanes)
+static void switch_tower(sfKeyEvent event, list_t *towers)
+{
+    tower_t *tower;
+
+    while (towers != NULL) {
+        tower = (tower_t *)(towers->data);
+        if (event.code == sfKeyL)
+            tower->show_area = !(tower->show_area);
+        if (event.code == sfKeyS)
+            tower->show_sprite = !(tower->show_sprite);
+        towers = towers->next;
+    }
+}
+
+static void switch_airplane(sfKeyEvent event, list_t *airplanes)
 {
     airplane_t *airplane;
-    int outline;
-    sfColor f_color;
 
     while (airplanes != NULL) {
         airplane = (airplane_t *)(airplanes->data);
@@ -19,10 +31,12 @@ void event_switch_sprite(sfKeyEvent event, list_t *airplanes)
             airplane->outline = !(airplane->outline);
         if (event.code == sfKeyS)
             airplane->show_sprite = !(airplane->show_sprite);
-        f_color = (airplane->show_sprite) ? sfWhite : sfTransparent;
-        outline = 2 * (airplane->outline);
-        sfRectangleShape_setFillColor(airplane->shape, f_color);
-        sfRectangleShape_setOutlineThickness(airplane->shape, outline);
         airplanes = airplanes->next;
     }
+}
+
+void event_switch_sprite(sfKeyEvent event, list_t *airplanes, list_t *towers)
+{
+    switch_airplane(event, airplanes);
+    switch_tower(event, towers);
 }

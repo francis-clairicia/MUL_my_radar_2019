@@ -10,6 +10,7 @@
 
 #include <SFML/Graphics.h>
 #include <stdlib.h>
+#include "csfml_spritesheet.h"
 
 typedef struct object
 {
@@ -22,7 +23,7 @@ typedef struct object
     unsigned int nb_sprites;
 } object_t;
 
-object_t *create_object(int obj, float width, float height);
+object_t *create_object(enum OBJECTS obj);
 void destroy_object(object_t *object);
 void draw_object(sfRenderWindow *window, object_t *object);
 void animate_object(object_t *object);
