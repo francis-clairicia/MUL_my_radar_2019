@@ -9,23 +9,19 @@
 
 static void draw_airplane(sfRenderWindow *window, airplane_t *airplane)
 {
-    sfVector2f hit_box_pos;
-    float x;
-    float y;
-    float a;
+    sfVector2f hitbox_pos = sfRectangleShape_getPosition(airplane->shape);
+    sfVector2f hitbox_size = sfRectangleShape_getSize(airplane->shape);
+    float a = to_radians(airplane->angle);
+    float x = (hitbox_size.x / 2.0) * cos(a);
+    float y = (hitbox_size.y / 2.0) * sin(a);
 
     if (airplane->fly == sfFalse)
         return;
     if (airplane->outline)
         sfRenderWindow_drawRectangleShape(window, airplane->shape, NULL);
     if (airplane->show_sprite) {
-        a = sfRectangleShape_getRotation(airplane->shape);
-        sfSprite_setRotation(airplane->object->sprite, a);
-        a = to_radians(a);
-        hit_box_pos = sfRectangleShape_getPosition(airplane->shape);
-        x = ((sfRectangleShape_getSize(airplane->shape).x) / 2.0) * cos(a);
-        y = ((sfRectangleShape_getSize(airplane->shape).y) / 2.0) * sin(a);
-        set_pos_object(airplane->object, hit_box_pos);
+        sfSprite_setRotation(airplane->object->sprite, airplane->angle);
+        set_pos_object(airplane->object, hitbox_pos);
         move_object(airplane->object, -x + y, -y - x);
         draw_object(window, airplane->object);
     }

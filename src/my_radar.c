@@ -47,18 +47,11 @@ void my_radar(sfRenderWindow *window, char const *script)
     list_t *airplanes = load_airplanes(script);
     list_t *towers = load_towers(script);
     sfClock *clock = sfClock_create();
-    int rotated = 0;
 
     while (sfRenderWindow_isOpen(window)) {
         draw_all(window, world_map, airplanes, towers);
         analyse_event(window, airplanes, towers);
         move_airplanes(airplanes);
-        if (elapsed_time(4000, clock) && !rotated) {
-            change_airplane_direction((airplane_t *)(my_node(airplanes, 0)->data), -180, 2);
-            change_airplane_direction((airplane_t *)(my_node(airplanes, 1)->data), 45, 3);
-            change_airplane_direction((airplane_t *)(my_node(airplanes, 2)->data), -72, 3);
-            rotated = 1;
-        }
     }
     destroy_object(world_map);
     destroy_airplanes(&airplanes);

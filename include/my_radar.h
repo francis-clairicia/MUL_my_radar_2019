@@ -71,7 +71,7 @@ void destroy_towers(list_t **towers);
 
 float to_degrees(float radians);
 float to_radians(float degrees);
-float conditionate_angle(float angle);
+float set_angle_to_range(float angle, float min, float max);
 float abs_float(float x);
 
 sfVector2f vector(sfVector2f point_a, sfVector2f point_b);

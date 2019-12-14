@@ -28,7 +28,7 @@ float get_arrival_direction(airplane_t *airplane)
 
     if (airplane->arrival.y < pos.y)
         angle = -angle;
-    return (conditionate_angle(to_degrees(angle)));
+    return (set_angle_to_range(to_degrees(angle), 0, 360));
 }
 
 void set_direction_to_arrival(airplane_t *airplane)
@@ -45,6 +45,9 @@ void set_direction_to_arrival(airplane_t *airplane)
 void change_airplane_direction(airplane_t *airplane,
     float rotate_offset, float delay)
 {
+    rotate_offset = set_angle_to_range(rotate_offset, -180, 180);
+    if (abs_float(rotate_offset) > 180.0)
+        rotate_offset += (rotate_offset < 0) ? 360.0 : -360.0;
     determine_rotate_side(airplane, airplane->angle + rotate_offset);
     airplane->rotate_offset = abs((int)rotate_offset);
     airplane->head_for_arrival = sfFalse;

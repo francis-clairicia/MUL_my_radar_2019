@@ -17,12 +17,12 @@ float to_radians(float degrees)
     return (degrees * M_PI / 180);
 }
 
-float conditionate_angle(float angle)
+float set_angle_to_range(float angle, float min, float max)
 {
-    while (angle < 0)
-        angle += 360;
-    while (angle >= 360)
-        angle -= 360;
+    while (angle < min)
+        angle += 360.0;
+    while (angle >= max)
+        angle -= 360.0;
     return (angle);
 }
 
