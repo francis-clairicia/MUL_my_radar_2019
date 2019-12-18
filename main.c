@@ -9,11 +9,17 @@
 
 static int valid_script(char const *script_path)
 {
-    int dot = my_find_char(script_path,  '.');
+    int dot;
+    int slash;
 
+    while ((slash = my_find_char(script_path, '/')) >= 0)
+        script_path = &script_path[slash + 1];
+    dot = my_find_char(script_path,  '.');
     if (dot < 0)
         return (0);
-    return (my_strlen(&script_path[dot + 1]) > 0);
+    while ((dot = my_find_char(script_path,  '.')) >= 0)
+        script_path = &script_path[dot + 1];
+    return (my_strlen(script_path) > 0);
 }
 
 static int valid_environment(char **envp)

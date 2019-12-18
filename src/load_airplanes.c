@@ -33,7 +33,9 @@ static void init_default_airplane_value(airplane_t *airplane)
     airplane->head_for_arrival_clock = sfClock_create();
     airplane->delay_before_readjustement = 0;
     airplane->rotate_side = 0;
-    airplane->fly = sfFalse;
+    airplane->take_off = sfFalse;
+    airplane->land_on = sfFalse;
+    airplane->destroyed = sfFalse;
     airplane->head_for_arrival = sfTrue;
 }
 

@@ -22,7 +22,7 @@ static void analyse_event(sfRenderWindow *window,
 {
     sfView *view = sfView_copy(sfRenderWindow_getView(window));
     sfVector2i mouse_pos = sfMouse_getPositionRenderWindow(window);
-    sfBool use_default = 0;
+    sfBool use_default_view = 0;
     sfEvent event;
 
     while (sfRenderWindow_pollEvent(window, &event)) {
@@ -32,9 +32,9 @@ static void analyse_event(sfRenderWindow *window,
             sfRenderWindow_close(window);
         if (event.type == sfEvtKeyReleased)
             event_switch_sprite(event.key, airplanes, towers);
-        use_default = handle_view(event, view, mouse_pos);
+        use_default_view = handle_view(event, view, mouse_pos);
     }
-    if (!use_default)
+    if (!use_default_view)
         sfRenderWindow_setView(window, view);
     else
         sfRenderWindow_setView(window, sfRenderWindow_getDefaultView(window));
@@ -52,6 +52,8 @@ void my_radar(sfRenderWindow *window, char const *script)
         draw_all(window, world_map, airplanes, towers);
         analyse_event(window, airplanes, towers);
         move_airplanes(airplanes);
+        if (all_airplanes_stopped_flying(airplanes))
+            sfRenderWindow_close(window);
     }
     destroy_object(world_map);
     destroy_airplanes(&airplanes);

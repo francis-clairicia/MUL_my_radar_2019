@@ -25,9 +25,17 @@ static void refresh_director_vector(airplane_t *airplane)
         airplane->rotate_side = 0;
 }
 
+static void check_airplane_landing_on(airplane_t *airplane, sfVector2f pos)
+{
+    sfVector2f actual_pos = sfRectangleShape_getPosition(airplane->shape);
+
+    airplane->land_on = point_on_segment(pos, actual_pos, airplane->arrival);
+}
+
 static void move_airplane(airplane_t *airplane)
 {
     sfVector2f offset;
+    sfVector2f former_pos = sfRectangleShape_getPosition(airplane->shape);
 
     if (airplane == NULL)
         return;
@@ -39,6 +47,7 @@ static void move_airplane(airplane_t *airplane)
         offset.x = airplane->speed * airplane->direction.x;
         offset.y = airplane->speed * airplane->direction.y;
         sfRectangleShape_move(airplane->shape, offset);
+        check_airplane_landing_on(airplane, former_pos);
     }
 }
 
@@ -49,8 +58,9 @@ void move_airplanes(list_t *airplanes)
     while (airplanes != NULL) {
         airplane = (airplane_t *)(airplanes->data);
         if (elapsed_time(airplane->delay * 1000, airplane->delay_clock))
-            airplane->fly = sfTrue;
-        if (airplane->fly)
+            airplane->take_off = sfTrue;
+        if (airplane->take_off
+        && !(airplane->land_on) && !(airplane->destroyed))
             move_airplane(airplane);
         if (airplane->delay_before_readjustement > 0
         && elapsed_time(airplane->delay_before_readjustement,

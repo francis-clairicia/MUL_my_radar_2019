@@ -15,7 +15,9 @@ static void draw_airplane(sfRenderWindow *window, airplane_t *airplane)
     float x = (hitbox_size.x / 2.0) * cos(a);
     float y = (hitbox_size.y / 2.0) * sin(a);
 
-    if (airplane->fly == sfFalse)
+    if (airplane->take_off == sfFalse)
+        return;
+    if (airplane->land_on || airplane->destroyed)
         return;
     if (airplane->outline)
         sfRenderWindow_drawRectangleShape(window, airplane->shape, NULL);

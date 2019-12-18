@@ -16,21 +16,17 @@ sfVector2f vector(sfVector2f point_a, sfVector2f point_b)
     return (v);
 }
 
-int is_colinear(sfVector2f u, sfVector2f v)
+float vector_norm(sfVector2f vector)
 {
-    float colinear_factor = (u.x * v.y) - (u.y * v.x);
-    float marge = 0.7;
-
-    return (colinear_factor >= -marge && colinear_factor <= marge);
+    return (sqrt(pow(vector.x, 2) + pow(vector.y, 2)));
 }
 
-int point_on_line(sfVector2f p_a, sfVector2f u, sfVector2f point_to_check)
+float vector_product(sfVector2f u, sfVector2f v)
 {
-    float a = u.y;
-    float b = -u.x;
-    float c = (-1) * (a * p_a.x + b * p_a.y);
-    float output = a * point_to_check.x + b * point_to_check.y + c;
-    float marge = 10;
+    return ((u.x * v.y) - (u.y * v.x));
+}
 
-    return (output >= -marge && output <= marge);
+float scalar_product(sfVector2f u, sfVector2f v)
+{
+    return ((u.x * v.x) + (u.y * v.y));
 }

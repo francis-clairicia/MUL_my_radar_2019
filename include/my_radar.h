@@ -38,7 +38,9 @@ typedef struct airplane
     sfClock *move_clock;
     sfClock *head_for_arrival_clock;
     unsigned int delay_before_readjustement;
-    sfBool fly;
+    sfBool take_off;
+    sfBool land_on;
+    sfBool destroyed;
 } airplane_t;
 
 typedef struct control_tower
@@ -59,6 +61,7 @@ list_t *load_airplanes(char const *script);
 void draw_airplanes(sfRenderWindow *window, list_t *airplanes);
 void destroy_airplanes(list_t **airplanes);
 void move_airplanes(list_t *airplanes);
+int all_airplanes_stopped_flying(list_t *airplanes);
 float get_arrival_direction(airplane_t *airplane);
 void set_direction_to_arrival(airplane_t *airplane);
 void change_airplane_direction(airplane_t *airplane,
@@ -75,7 +78,10 @@ float set_angle_to_range(float angle, float min, float max);
 float abs_float(float x);
 
 sfVector2f vector(sfVector2f point_a, sfVector2f point_b);
-int is_colinear(sfVector2f vector_u, sfVector2f vector_v);
+float vector_norm(sfVector2f vector);
+float scalar_product(sfVector2f u, sfVector2f v);
+float vector_product(sfVector2f u, sfVector2f v);
 int point_on_line(sfVector2f p_a, sfVector2f u, sfVector2f point_to_check);
+int point_on_segment(sfVector2f p_a, sfVector2f p_b, sfVector2f p_c);
 
 #endif

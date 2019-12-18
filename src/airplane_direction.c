@@ -19,12 +19,11 @@ static void determine_rotate_side(airplane_t *airplane, int new_angle)
 float get_arrival_direction(airplane_t *airplane)
 {
     sfVector2f pos = sfRectangleShape_getPosition(airplane->shape);
-    sfVector2f director_v = {
-        airplane->arrival.x - pos.x,
-        airplane->arrival.y - pos.y
-    };
-    float norm_v = sqrt(pow(director_v.x, 2) + pow(director_v.y, 2));
-    float angle = acos(director_v.x / norm_v);
+    sfVector2f axis = {1, 0};
+    sfVector2f director_v = vector(pos, airplane->arrival);
+    float s_product = scalar_product(axis, director_v);
+    float norm_product = vector_norm(director_v) * vector_norm(axis);
+    float angle = acos(s_product / norm_product);
 
     if (airplane->arrival.y < pos.y)
         angle = -angle;
