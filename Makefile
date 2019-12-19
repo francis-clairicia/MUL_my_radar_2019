@@ -19,8 +19,7 @@ SRC_NO_TEST	=	$(SRC_DIR)/my_radar.c							\
 				$(SRC_DIR)/event_switch_sprite.c				\
 				$(SRC_DIR)/load_towers.c						\
 				$(SRC_DIR)/draw_towers.c						\
-				$(SRC_DIR)/destroy_towers.c						\
-				$(SRC_DIR)/view.c
+				$(SRC_DIR)/destroy_towers.c
 
 SRC_TEST	=	$(SRC_DIR)/error_script.c			\
 				$(SRC_DIR)/vector.c					\
@@ -33,7 +32,6 @@ CSFML		=	csfml/framebuffer.c				\
 				csfml/draw_square.c				\
 				csfml/clock.c					\
 				csfml/object/create_object.c	\
-				csfml/object/animate_object.c	\
 				csfml/object/move_object.c		\
 				csfml/object/draw_object.c
 

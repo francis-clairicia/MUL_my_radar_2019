@@ -18,8 +18,6 @@ object_t *create_object(enum OBJECTS obj)
         object->texture = sfTexture_createFromFile(info.filepath, &(info.rect));
     else
         object->texture = sfTexture_createFromFile(info.filepath, NULL);
-    sprite_rect.width = sfTexture_getSize(object->texture).x;
-    sprite_rect.height = sfTexture_getSize(object->texture).y;
     object->sprite = sfSprite_create();
     object->sprite_rect = sprite_rect;
     object->default_rect = sprite_rect;

@@ -9,7 +9,7 @@
 
 static void init_default_values(tower_t *tower, sfVector2f pos)
 {
-    sfColor color = sfColor_fromRGB(0, 0, 155);
+    sfColor color = {0, 0, 155, 255};
     sfVector2f origin = {tower->radius, tower->radius};
 
     sfCircleShape_setRadius(tower->area, tower->radius);

@@ -11,7 +11,7 @@ static void init_airplane_shape(airplane_t *airplane)
 {
     sfVector2f shape_size = {20, 20};
     sfVector2f origin = {10, 10};
-    sfColor color = sfColor_fromRGB(46, 173, 46);
+    sfColor color = {46, 173, 46, 255};
 
     sfRectangleShape_setSize(airplane->shape, shape_size);
     airplane->show_sprite = sfTrue;
