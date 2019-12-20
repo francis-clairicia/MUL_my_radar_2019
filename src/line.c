@@ -14,7 +14,7 @@ int point_on_line(sfVector2f p_a, sfVector2f u, sfVector2f point_to_check)
     float c = (-1) * (a * p_a.x + b * p_a.y);
     float output = a * point_to_check.x + b * point_to_check.y + c;
 
-    return (abs_float(output) <= 1);
+    return (abs_float(output) <= 0.5);
 }
 
 int point_on_segment(sfVector2f p_a, sfVector2f p_b, sfVector2f p_c)

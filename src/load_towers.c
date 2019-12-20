@@ -15,7 +15,7 @@ static void init_default_values(tower_t *tower, sfVector2f pos)
     sfCircleShape_setRadius(tower->area, tower->radius);
     sfCircleShape_setOrigin(tower->area, origin);
     set_pos_object(tower->object, pos);
-    move_object(tower->object, -25, -25);
+    move_object(tower->object, -25, -50);
     sfCircleShape_setPosition(tower->area, pos);
     sfCircleShape_setOutlineColor(tower->area, color);
     sfCircleShape_setFillColor(tower->area, sfTransparent);
