@@ -16,10 +16,10 @@ static void refresh_director_vector(airplane_t *airplane)
         airplane->rotate_offset -= 1;
     angle = sfRectangleShape_getRotation(airplane->shape);
     airplane->angle = angle;
-    airplane->direction.x = cos(to_radians(angle));
-    airplane->direction.y = sin(to_radians(angle));
+    airplane->direction.x = cos(RADIANS(angle));
+    airplane->direction.y = sin(RADIANS(angle));
     if (airplane->head_for_arrival) {
-        if (abs_float(angle - get_arrival_direction(airplane)) <= 0.5)
+        if (ABS(angle - get_arrival_direction(airplane)) <= 0.5)
             set_direction_to_arrival(airplane);
     } else if (airplane->rotate_offset == 0)
         airplane->rotate_side = 0;

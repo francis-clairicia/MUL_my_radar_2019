@@ -11,9 +11,8 @@ static void draw_airplane(sfRenderWindow *window, airplane_t *airplane)
 {
     sfVector2f hitbox_pos = sfRectangleShape_getPosition(airplane->shape);
     sfVector2f hitbox_size = sfRectangleShape_getSize(airplane->shape);
-    float a = to_radians(airplane->angle);
-    float x = (hitbox_size.x / 2.0) * cos(a);
-    float y = (hitbox_size.y / 2.0) * sin(a);
+    float x = (hitbox_size.x / 2.0) * cos(RADIANS(airplane->angle));
+    float y = (hitbox_size.y / 2.0) * sin(RADIANS(airplane->angle));
 
     if (airplane->take_off == sfFalse)
         return;

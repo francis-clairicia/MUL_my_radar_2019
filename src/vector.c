@@ -21,12 +21,17 @@ float vector_norm(sfVector2f vector)
     return (sqrt(pow(vector.x, 2) + pow(vector.y, 2)));
 }
 
-float vector_product(sfVector2f u, sfVector2f v)
+float cross_product(sfVector2f u, sfVector2f v)
 {
     return ((u.x * v.y) - (u.y * v.x));
 }
 
-float scalar_product(sfVector2f u, sfVector2f v)
+float dot_product(sfVector2f u, sfVector2f v)
 {
     return ((u.x * v.x) + (u.y * v.y));
+}
+
+float angle_formed_by_vector(sfVector2f u, sfVector2f v)
+{
+    return (acos(dot_product(u, v) / (vector_norm(u) * vector_norm(v))));
 }

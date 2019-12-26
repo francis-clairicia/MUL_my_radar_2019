@@ -17,6 +17,13 @@
 #define M_PI 3.14159265358979323846
 #endif
 
+#define ABS(value) ((value < 0) ? -value : value)
+#define MIN(a, b) ((a < b) ? (a) : (b))
+#define MAX(a, b) ((a > b) ? (a) : (b))
+
+#define DEGREES(angle_in_radians) ((float)angle_in_radians * 180.0 / M_PI)
+#define RADIANS(angle_in_degrees) ((float)angle_in_degrees * M_PI / 180.0)
+
 typedef struct airplane
 {
     object_t *object;
@@ -67,20 +74,23 @@ void set_direction_to_arrival(airplane_t *airplane);
 void change_airplane_direction(airplane_t *airplane,
     float rotate_offset, float delay);
 void head_for_arrival(airplane_t *airplane);
+void check_airplane_collision(list_t *airplanes);
 
 list_t *load_towers(char const *script);
 void draw_towers(sfRenderWindow *window, list_t *towers);
 void destroy_towers(list_t **towers);
 
-float to_degrees(float radians);
-float to_radians(float degrees);
 float set_angle_to_range(float angle, float min, float max);
-float abs_float(float x);
 
 sfVector2f vector(sfVector2f point_a, sfVector2f point_b);
 float vector_norm(sfVector2f vector);
-float scalar_product(sfVector2f u, sfVector2f v);
-float vector_product(sfVector2f u, sfVector2f v);
+float dot_product(sfVector2f u, sfVector2f v);
+float cross_product(sfVector2f u, sfVector2f v);
+float angle_formed_by_vector(sfVector2f u, sfVector2f v);
+
+int shape_intersection(sfRectangleShape *shape_A, sfRectangleShape *shape_B);
+int segment_intersection(sfVector2f segment_1[2], sfVector2f segment_2[2]);
+
 int point_on_line(sfVector2f p_a, sfVector2f u, sfVector2f point_to_check);
 int point_on_segment(sfVector2f p_a, sfVector2f p_b, sfVector2f p_c);
 

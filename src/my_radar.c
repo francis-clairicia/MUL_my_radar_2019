@@ -8,6 +8,25 @@
 #include "my_radar.h"
 #include "csfml_spritesheet.h"
 
+static void print_result(list_t *airplanes)
+{
+    airplane_t *airplane;
+    int nb_airplanes_landed_on = 0;
+    int nb_airplanes_destroyed = 0;
+
+    while (airplanes != NULL) {
+        airplane = (airplane_t *)(airplanes->data);
+        nb_airplanes_landed_on += airplane->land_on;
+        nb_airplanes_destroyed += airplane->destroyed;
+        airplanes = airplanes->next;
+    }
+    my_putstr("Airplanes landed on: ");
+    my_put_nbr(nb_airplanes_landed_on);
+    my_putstr("\nAirplanes destroyed: ");
+    my_put_nbr(nb_airplanes_destroyed);
+    my_putchar('\n');
+}
+
 static void draw_all(sfRenderWindow *window, object_t *bg,
     list_t *airplanes, list_t *towers)
 {
@@ -43,9 +62,11 @@ void my_radar(sfRenderWindow *window, char const *script)
         draw_all(window, world_map, airplanes, towers);
         analyse_event(window, airplanes, towers);
         move_airplanes(airplanes);
+        check_airplane_collision(airplanes);
         if (all_airplanes_stopped_flying(airplanes))
             sfRenderWindow_close(window);
     }
+    print_result(airplanes);
     destroy_object(world_map);
     destroy_airplanes(&airplanes);
     destroy_towers(&towers);
