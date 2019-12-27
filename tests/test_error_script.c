@@ -8,6 +8,18 @@
 #include <criterion/criterion.h>
 #include "my_radar.h"
 
+Test(valid_script, check_script_path_validity)
+{
+    cr_expect_eq(valid_script("test.txt"), 1);
+    cr_expect_eq(valid_script("test.a"), 1);
+    cr_expect_eq(valid_script("./ficher.rdr"), 1);
+    cr_expect_eq(valid_script("./folder/"), 0);
+    cr_expect_eq(valid_script("folder/"), 0);
+    cr_expect_eq(valid_script("script_without_legend"), 0);
+    cr_expect_eq(valid_script("fichier.script.txt"), 1);
+    cr_expect_eq(valid_script("fichier.script."), 0);
+}
+
 Test(error_script, check_script_validity)
 {
     cr_expect_eq(error_script("A 1 1 10 10 5 0\n"), 0);

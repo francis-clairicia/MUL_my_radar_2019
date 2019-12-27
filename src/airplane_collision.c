@@ -12,7 +12,7 @@ static void airplane_collision(airplane_t *airplane, airplane_t *other_airplane)
     sfVector2f pos_a = sfRectangleShape_getPosition(airplane->shape);
     sfVector2f pos_b = sfRectangleShape_getPosition(other_airplane->shape);
 
-    if (vector_norm(vector(pos_a, pos_b)) > 40)
+    if (vector_norm(vector(pos_a, pos_b)) > 45)
         return;
     if (shape_intersection(airplane->shape, other_airplane->shape)) {
         airplane->destroyed = sfTrue;

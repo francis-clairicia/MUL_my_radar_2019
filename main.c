@@ -7,19 +7,22 @@
 
 #include "my_radar.h"
 
-static int valid_script(char const *script_path)
+static int print_help(int ac, char **av)
 {
-    int dot;
-    int slash;
-
-    while ((slash = my_find_char(script_path, '/')) >= 0)
-        script_path = &script_path[slash + 1];
-    dot = my_find_char(script_path,  '.');
-    if (dot < 0)
+    if (ac < 2)
         return (0);
-    while ((dot = my_find_char(script_path,  '.')) >= 0)
-        script_path = &script_path[dot + 1];
-    return (my_strlen(script_path) > 0);
+    if (my_strcmp(av[1], "-h") != 0)
+        return (0);
+    my_putstr("Air traffic simulation panel\n\n");
+    my_putstr("USAGE\n");
+    my_putstr("\t./my_radar [OPTIONS] path_to_script\n");
+    my_putstr("\tpath_to_script\tThe path to the script file.\n\n");
+    my_putstr("OPTIONS\n");
+    my_putstr("\t-h\tPrint the usage and exit\n\n");
+    my_putstr("USER INTERACTIONS\n");
+    my_putstr("\t'L' key\t\tenable/disable hitboxes and areas.\n");
+    my_putstr("\t'S' key\t\tenable/disable sprites.\n");
+    return (1);
 }
 
 static int valid_environment(char **envp)
@@ -36,13 +39,35 @@ static int valid_environment(char **envp)
     return (0);
 }
 
+static int error_handling(int ac, char **av, char **envp)
+{
+    int error = 0;
+
+    if (!valid_environment(envp)) {
+        my_putstr("./my_radar: bad environment\n");
+        error = 1;
+    } if (ac != 2) {
+        my_putstr("./my_radar: bad arguments: ");
+        my_put_nbr(ac - 1);
+        my_putstr(" given but 1 is required\n");
+        error = 1;
+    } if (ac == 2 && !valid_script(av[1])) {
+        my_putstr("./my_radar: bad arguments: invalid script filepath\n");
+        error = 1;
+    } if (error)
+        my_putstr("retry with -h\n");
+    return (error);
+}
+
 int main(int ac, char **av, char **envp)
 {
     sfRenderWindow *window;
     char *script = NULL;
     int output = 0;
 
-    if ((ac != 2) || !valid_environment(envp) || !valid_script(av[1]))
+    if (print_help(ac, av))
+        return (0);
+    if (error_handling(ac, av, envp))
         return (84);
     script = open_file(av[1], &error_script);
     if (script != NULL) {

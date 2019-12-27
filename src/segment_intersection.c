@@ -28,7 +28,7 @@ static int point_right_to_segment(sfVector2f segment[2], sfVector2f point)
     sfVector2f u = vector(segment[0], segment[1]);
     sfVector2f v = vector(segment[0], point);
 
-    return (cross_product(u, v) < 0);
+    return (cross_product(u, v) <= 0);
 }
 
 static int segment_touchs_or_crosses_line(sfVector2f a[2], sfVector2f b[2])
