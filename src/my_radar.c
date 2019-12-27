@@ -41,6 +41,7 @@ static void analyse_event(sfRenderWindow *window,
     sfEvent event;
 
     move_airplanes(airplanes);
+    check_airplane_on_tower(airplanes, towers);
     check_airplane_collision(airplanes);
     while (sfRenderWindow_pollEvent(window, &event)) {
         if (event.type == sfEvtClosed
@@ -50,6 +51,10 @@ static void analyse_event(sfRenderWindow *window,
         if (event.type == sfEvtKeyReleased)
             event_switch_sprite(event.key, airplanes, towers);
     }
+    if (all_airplanes_stopped_flying(airplanes)) {
+        print_result(airplanes);
+        sfRenderWindow_close(window);
+    }
 }
 
 void my_radar(sfRenderWindow *window, char const *script)
@@ -58,19 +63,18 @@ void my_radar(sfRenderWindow *window, char const *script)
     list_t *airplanes = load_airplanes(script);
     list_t *towers = load_towers(script);
     sfClock *chrono = sfClock_create();
+    sfClock *clock_for_fps = sfClock_create();
 
     while (sfRenderWindow_isOpen(window)) {
         draw_all(window, world_map, airplanes, towers);
         show_clock(window, chrono);
+        show_fps(window, clock_for_fps);
         sfRenderWindow_display(window);
         analyse_event(window, airplanes, towers);
-        if (all_airplanes_stopped_flying(airplanes)) {
-            print_result(airplanes);
-            sfRenderWindow_close(window);
-        }
     }
     destroy_object(world_map);
     destroy_airplanes(&airplanes);
     destroy_towers(&towers);
     sfClock_destroy(chrono);
+    sfClock_destroy(clock_for_fps);
 }

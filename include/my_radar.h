@@ -48,6 +48,7 @@ typedef struct airplane
     sfBool take_off;
     sfBool land_on;
     sfBool destroyed;
+    sfBool on_tower_area;
 } airplane_t;
 
 typedef struct control_tower
@@ -64,12 +65,14 @@ int valid_script(char const *script_path);
 int error_script(char const *script);
 void event_switch_sprite(sfKeyEvent event, list_t *airplanes, list_t *towers);
 void show_clock(sfRenderWindow *window, sfClock *clock);
+void show_fps(sfRenderWindow *window, sfClock *clock);
 
 list_t *load_airplanes(char const *script);
 void draw_airplanes(sfRenderWindow *window, list_t *airplanes);
 void destroy_airplanes(list_t **airplanes);
 void move_airplanes(list_t *airplanes);
 int all_airplanes_stopped_flying(list_t *airplanes);
+void check_airplane_on_tower(list_t *airplanes, list_t *towers);
 float get_arrival_direction(airplane_t *airplane);
 void set_direction_to_arrival(airplane_t *airplane);
 void change_airplane_direction(airplane_t *airplane,
@@ -90,7 +93,8 @@ float cross_product(sfVector2f u, sfVector2f v);
 float angle_formed_by_vector(sfVector2f u, sfVector2f v);
 
 int shape_intersection(sfRectangleShape *shape_A, sfRectangleShape *shape_B);
-int segment_intersection(sfVector2f segment_1[2], sfVector2f segment_2[2]);
+int separating_axis_method(sfVector2f edges_first[4],
+    sfVector2f points_first[4], sfVector2f points_second[4]);
 
 int point_on_line(sfVector2f p_a, sfVector2f u, sfVector2f point_to_check);
 int point_on_segment(sfVector2f p_a, sfVector2f p_b, sfVector2f p_c);

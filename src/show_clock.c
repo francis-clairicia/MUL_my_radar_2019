@@ -39,7 +39,7 @@ static int text_width(sfText *text)
 static void init_text(sfText *text, sfFont *font, char const *str)
 {
     sfVector2f origin = {0, 0};
-    sfVector2f pos = {1920, 0};
+    sfVector2f pos = {1920, 10};
 
     sfText_setFont(text, font);
     sfText_setString(text, str);

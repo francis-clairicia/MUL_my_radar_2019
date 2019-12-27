@@ -37,6 +37,7 @@ static void init_default_airplane_value(airplane_t *airplane)
     airplane->land_on = sfFalse;
     airplane->destroyed = sfFalse;
     airplane->head_for_arrival = sfTrue;
+    airplane->on_tower_area = sfFalse;
 }
 
 static airplane_t *create_airplane(char * const *infos)
