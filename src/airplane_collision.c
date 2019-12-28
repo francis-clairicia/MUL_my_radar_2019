@@ -29,6 +29,8 @@ static void check_collision(airplane_t *airplane, list_t *other_airplanes)
         if (other_airplane->take_off && !(other_airplane->land_on)
         && !(other_airplane->destroyed) && !(other_airplane->on_tower_area))
             airplane_collision(airplane, other_airplane);
+        if (airplane->destroyed)
+            return;
         other_airplanes = other_airplanes->next;
     }
 }
@@ -37,7 +39,7 @@ void check_airplane_collision(list_t *airplanes)
 {
     airplane_t *airplane;
 
-    while (airplanes != NULL) {
+    while (airplanes->next != NULL) {
         airplane = (airplane_t *)(airplanes->data);
         if (airplane->take_off  && !(airplane->land_on)
         && !(airplane->destroyed) && !(airplane->on_tower_area))

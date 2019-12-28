@@ -27,12 +27,20 @@ static void print_result(list_t *airplanes)
     my_putchar('\n');
 }
 
-static void draw_all(sfRenderWindow *window, object_t *bg,
+static void draw_all(sfRenderWindow *window, object_t *world_map,
     list_t *airplanes, list_t *towers)
 {
-    draw_object(window, bg);
+    draw_object(window, world_map);
     draw_towers(window, towers);
     draw_airplanes(window, airplanes);
+}
+
+static void destroy_all(object_t *world_map,
+    list_t **airplanes, list_t **towers)
+{
+    destroy_object(world_map);
+    destroy_airplanes(airplanes);
+    destroy_towers(towers);
 }
 
 static void analyse_event(sfRenderWindow *window,
@@ -60,11 +68,14 @@ static void analyse_event(sfRenderWindow *window,
 void my_radar(sfRenderWindow *window, char const *script)
 {
     object_t *world_map = create_object(WORLD_MAP);
-    list_t *airplanes = load_airplanes(script);
-    list_t *towers = load_towers(script);
-    sfClock *chrono = sfClock_create();
-    sfClock *clock_for_fps = sfClock_create();
+    list_t *airplanes = NULL;
+    list_t *towers = NULL;
+    sfClock *chrono;
+    sfClock *clock_for_fps;
 
+    load_airplanes_towers(&airplanes, &towers, script);
+    clock_for_fps = sfClock_create();
+    chrono = sfClock_create();
     while (sfRenderWindow_isOpen(window)) {
         draw_all(window, world_map, airplanes, towers);
         show_clock(window, chrono);
@@ -72,9 +83,7 @@ void my_radar(sfRenderWindow *window, char const *script)
         sfRenderWindow_display(window);
         analyse_event(window, airplanes, towers);
     }
-    destroy_object(world_map);
-    destroy_airplanes(&airplanes);
-    destroy_towers(&towers);
+    destroy_all(world_map, &airplanes, &towers);
     sfClock_destroy(chrono);
     sfClock_destroy(clock_for_fps);
 }

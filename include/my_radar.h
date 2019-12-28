@@ -67,7 +67,11 @@ void event_switch_sprite(sfKeyEvent event, list_t *airplanes, list_t *towers);
 void show_clock(sfRenderWindow *window, sfClock *clock);
 void show_fps(sfRenderWindow *window, sfClock *clock);
 
-list_t *load_airplanes(char const *script);
+void load_airplanes_towers(list_t **airplanes, list_t **towers,
+    char const *script);
+airplane_t *create_airplane(char * const *infos);
+tower_t *create_tower(char * const *infos);
+
 void draw_airplanes(sfRenderWindow *window, list_t *airplanes);
 void destroy_airplanes(list_t **airplanes);
 void move_airplanes(list_t *airplanes);
@@ -80,7 +84,6 @@ void change_airplane_direction(airplane_t *airplane,
 void head_for_arrival(airplane_t *airplane);
 void check_airplane_collision(list_t *airplanes);
 
-list_t *load_towers(char const *script);
 void draw_towers(sfRenderWindow *window, list_t *towers);
 void destroy_towers(list_t **towers);
 

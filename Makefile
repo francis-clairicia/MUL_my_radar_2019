@@ -12,6 +12,7 @@ SRC_DIR		=	src
 SRC_NO_TEST	=	$(SRC_DIR)/my_radar.c							\
 				$(SRC_DIR)/show_clock.c							\
 				$(SRC_DIR)/show_fps.c							\
+				$(SRC_DIR)/load_airplanes_towers.c				\
 				$(SRC_DIR)/load_airplanes.c						\
 				$(SRC_DIR)/draw_airplanes.c						\
 				$(SRC_DIR)/destroy_airplanes.c					\
