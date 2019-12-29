@@ -7,19 +7,21 @@
 
 #include "my_radar.h"
 
-int all_airplanes_stopped_flying(list_t *airplanes)
+sfBool all_airplanes_stopped_flying(list_t *airplanes)
 {
     airplane_t *airplane;
 
     if (airplanes == NULL)
-        return  (0);
+        return (sfFalse);
     while (airplanes != NULL) {
         airplane = (airplane_t *)(airplanes->data);
-        if (!(airplane->take_off))
-            return (0);
-        if (!(airplane->land_on) && !(airplane->destroyed))
-            return (0);
         airplanes = airplanes->next;
+        if (airplane == NULL)
+            continue;
+        if (!(airplane->take_off))
+            return (sfFalse);
+        if (!(airplane->land_on) && !(airplane->destroyed))
+            return (sfFalse);
     }
-    return (1);
+    return (sfTrue);
 }

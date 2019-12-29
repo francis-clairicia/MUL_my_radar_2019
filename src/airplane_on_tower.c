@@ -7,7 +7,7 @@
 
 #include "my_radar.h"
 
-static int airplane_on_tower(airplane_t *airplane, list_t *towers)
+static sfBool airplane_on_tower(airplane_t *airplane, list_t *towers)
 {
     tower_t *tower;
     sfVector2f airplane_pos = sfRectangleShape_getPosition(airplane->shape);
@@ -15,12 +15,14 @@ static int airplane_on_tower(airplane_t *airplane, list_t *towers)
 
     while (towers != NULL) {
         tower = (tower_t *)(towers->data);
+        towers = towers->next;
+        if (tower == NULL)
+            continue;
         center_area = sfCircleShape_getPosition(tower->area);
         if (vector_norm(vector(center_area, airplane_pos)) <= tower->radius)
-            return (1);
-        towers = towers->next;
+            return (sfTrue);
     }
-    return (0);
+    return (sfFalse);
 }
 
 void check_airplane_on_tower(list_t *airplanes, list_t *towers)
@@ -29,7 +31,8 @@ void check_airplane_on_tower(list_t *airplanes, list_t *towers)
 
     while (airplanes != NULL) {
         airplane = (airplane_t *)(airplanes->data);
-        airplane->on_tower_area = airplane_on_tower(airplane, towers);
+        if (airplane != NULL)
+            airplane->on_tower_area = airplane_on_tower(airplane, towers);
         airplanes = airplanes->next;
     }
 }

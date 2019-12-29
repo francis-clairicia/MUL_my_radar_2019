@@ -7,7 +7,7 @@
 
 #include "my_radar.h"
 
-int point_on_line(sfVector2f p_a, sfVector2f u, sfVector2f point_to_check)
+sfBool point_on_line(sfVector2f p_a, sfVector2f u, sfVector2f point_to_check)
 {
     float a = u.y;
     float b = -u.x;
@@ -17,7 +17,7 @@ int point_on_line(sfVector2f p_a, sfVector2f u, sfVector2f point_to_check)
     return (ABS(output) <= 0.5);
 }
 
-int point_on_segment(sfVector2f p_a, sfVector2f p_b, sfVector2f p_c)
+sfBool point_on_segment(sfVector2f p_a, sfVector2f p_b, sfVector2f p_c)
 {
     sfVector2f vector_ab = vector(p_a, p_b);
     sfVector2f vector_ac = vector(p_a, p_c);
@@ -25,7 +25,7 @@ int point_on_segment(sfVector2f p_a, sfVector2f p_b, sfVector2f p_c)
     float K_ac;
 
     if (ABS(cross_product(vector_ab, vector_ac)) > 0.5)
-        return (0);
+        return (sfFalse);
     K_ab = dot_product(vector_ab, vector_ab);
     K_ac = dot_product(vector_ab, vector_ac);
     return (K_ac >= 0 && K_ac <= K_ab);

@@ -7,6 +7,19 @@
 
 #include "my_radar.h"
 
+static sfBool handle_creation_error(tower_t **tower)
+{
+    if ((*tower)->object == NULL || (*tower)->area == NULL) {
+        if ((*tower)->object != NULL)
+            destroy_object((*tower)->object);
+        if ((*tower)->area != NULL)
+            sfCircleShape_destroy((*tower)->area);
+        free(*tower);
+        *tower = NULL;
+    }
+    return (*tower != NULL);
+}
+
 static void init_default_values(tower_t *tower, sfVector2f pos)
 {
     sfColor color = {0, 0, 155, 255};
@@ -34,8 +47,9 @@ tower_t *create_tower(char * const *infos)
     pos.y = my_getnbr(infos[2]);
     tower->radius = 1920.0 * ((float)my_getnbr(infos[3]) / 100.0);
     tower->area = sfCircleShape_create();
-    tower->show_area = sfFalse;
+    tower->show_area = sfTrue;
     tower->show_sprite = sfTrue;
-    init_default_values(tower, pos);
+    if (handle_creation_error(&tower))
+        init_default_values(tower, pos);
     return (tower);
 }

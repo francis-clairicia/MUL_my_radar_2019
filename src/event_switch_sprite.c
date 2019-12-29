@@ -13,11 +13,11 @@ static void switch_tower(sfKeyEvent event, list_t *towers)
 
     while (towers != NULL) {
         tower = (tower_t *)(towers->data);
+        towers = towers->next;
         if (event.code == sfKeyL)
             tower->show_area = !(tower->show_area);
-        if (event.code == sfKeyS)
+        else if (event.code == sfKeyS)
             tower->show_sprite = !(tower->show_sprite);
-        towers = towers->next;
     }
 }
 
@@ -27,11 +27,11 @@ static void switch_airplane(sfKeyEvent event, list_t *airplanes)
 
     while (airplanes != NULL) {
         airplane = (airplane_t *)(airplanes->data);
-        if (event.code == sfKeyL)
-            airplane->outline = !(airplane->outline);
-        if (event.code == sfKeyS)
-            airplane->show_sprite = !(airplane->show_sprite);
         airplanes = airplanes->next;
+        if (event.code == sfKeyL)
+            airplane->show_hitbox = !(airplane->show_hitbox);
+        else if (event.code == sfKeyS)
+            airplane->show_sprite = !(airplane->show_sprite);
     }
 }
 

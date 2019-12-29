@@ -28,7 +28,7 @@ static char *get_time(int elapsed)
     return (time_elapsed);
 }
 
-static int text_width(sfText *text)
+static sfBool text_width(sfText *text)
 {
     int nb_chars = my_strlen(sfText_getString(text));
     int char_size = sfText_getCharacterSize(text);
@@ -60,8 +60,10 @@ void show_clock(sfRenderWindow *window, sfClock *clock)
         return;
     text = sfText_create();
     font = sfFont_createFromFile("./fonts/Darks_Calibri_Remix.ttf");
-    init_text(text, font, time_elapsed);
-    sfRenderWindow_drawText(window, text, NULL);
+    if (text != NULL && font != NULL) {
+        init_text(text, font, time_elapsed);
+        sfRenderWindow_drawText(window, text, NULL);
+    }
     sfText_destroy(text);
     sfFont_destroy(font);
     free(time_elapsed);

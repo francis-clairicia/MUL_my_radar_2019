@@ -18,7 +18,7 @@ static void draw_airplane(sfRenderWindow *window, airplane_t *airplane)
         return;
     if (airplane->land_on || airplane->destroyed)
         return;
-    if (airplane->outline)
+    if (airplane->show_hitbox)
         sfRenderWindow_drawRectangleShape(window, airplane->shape, NULL);
     if (airplane->show_sprite) {
         sfSprite_setRotation(airplane->object->sprite, airplane->angle);
@@ -34,8 +34,8 @@ void draw_airplanes(sfRenderWindow *window, list_t *airplanes)
 
     while (airplanes != NULL) {
         airplane = (airplane_t *)(airplanes->data);
+        airplanes = airplanes->next;
         if (airplane != NULL)
             draw_airplane(window, airplane);
-        airplanes = airplanes->next;
     }
 }

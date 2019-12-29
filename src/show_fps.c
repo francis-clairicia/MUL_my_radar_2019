@@ -34,11 +34,13 @@ static void print_fps(sfRenderWindow *window, int fps)
         return;
     text = sfText_create();
     font = sfFont_createFromFile("./fonts/Darks_Calibri_Remix.ttf");
-    sfText_setFont(text, font);
-    sfText_setString(text, str_fps);
-    sfText_setCharacterSize(text, 50);
-    sfText_setPosition(text, pos);
-    sfRenderWindow_drawText(window, text, NULL);
+    if (text != NULL && font != NULL) {
+        sfText_setFont(text, font);
+        sfText_setString(text, str_fps);
+        sfText_setCharacterSize(text, 50);
+        sfText_setPosition(text, pos);
+        sfRenderWindow_drawText(window, text, NULL);
+    }
     sfText_destroy(text);
     sfFont_destroy(font);
     free(str_fps);

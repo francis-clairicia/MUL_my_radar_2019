@@ -26,7 +26,7 @@ static void get_edges(sfVector2f edges[4], sfVector2f points[4],
     edges[3] = vector(points[3], points[0]);
 }
 
-int shape_intersection(sfRectangleShape *shape_A, sfRectangleShape *shape_B)
+sfBool shape_intersection(sfRectangleShape *shape_A, sfRectangleShape *shape_B)
 {
     sfVector2f edges_A[4];
     sfVector2f points_A[4];
@@ -37,6 +37,6 @@ int shape_intersection(sfRectangleShape *shape_A, sfRectangleShape *shape_B)
     get_edges(edges_B, points_B, shape_B);
     if (separating_axis_method(edges_A, points_A, points_B) == 1
     || separating_axis_method(edges_B, points_B, points_A) == 1)
-        return (1);
-    return (0);
+        return (sfTrue);
+    return (sfFalse);
 }

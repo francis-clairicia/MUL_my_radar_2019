@@ -36,13 +36,10 @@ static void project_shape(sfVector2f axis, sfVector2f points[4],
 
 static float interval_distance(float minA, float maxA, float minB, float maxB)
 {
-    if (minA < minB)
-        return (minB - maxA);
-    else
-        return (minA - maxB);
+    return ((minA < minB) ? (minB - maxA) : (minA - maxB));
 }
 
-int separating_axis_method(sfVector2f edges_first[4],
+sfBool separating_axis_method(sfVector2f edges_first[4],
     sfVector2f points_first[4], sfVector2f points_second[4])
 {
     sfVector2f axis;
@@ -59,8 +56,8 @@ int separating_axis_method(sfVector2f edges_first[4],
         project_shape(axis, points_first, &minA, &maxA);
         project_shape(axis, points_second, &minB, &maxB);
         if (interval_distance(minA, maxA, minB, maxB) > 0)
-            return (0);
+            return (sfFalse);
         i += 1;
     }
-    return (1);
+    return (sfTrue);
 }

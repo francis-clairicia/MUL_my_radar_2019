@@ -7,6 +7,30 @@
 
 #include "my_radar.h"
 
+static sfBool handle_creation_error(airplane_t **airplane)
+{
+    if ((*airplane)->object == NULL || (*airplane)->shape == NULL) {
+        if ((*airplane)->object != NULL)
+            destroy_object((*airplane)->object);
+        if ((*airplane)->shape != NULL)
+            sfRectangleShape_destroy((*airplane)->shape);
+        free(*airplane);
+        *airplane = NULL;
+    }
+    return (*airplane != NULL);
+}
+
+static void init_default_airplane_value(airplane_t *airplane)
+{
+    airplane->angle = 0;
+    airplane->delay_clock = sfClock_create();
+    airplane->move_clock = sfClock_create();
+    airplane->take_off = sfFalse;
+    airplane->land_on = sfFalse;
+    airplane->destroyed = sfFalse;
+    airplane->on_tower_area = sfFalse;
+}
+
 static void init_airplane_shape(airplane_t *airplane)
 {
     sfVector2f shape_size = {20, 20};
@@ -17,27 +41,10 @@ static void init_airplane_shape(airplane_t *airplane)
     airplane->show_sprite = sfTrue;
     sfRectangleShape_setOrigin(airplane->shape, origin);
     sfRectangleShape_setPosition(airplane->shape, airplane->departure);
-    airplane->outline = sfFalse;
+    airplane->show_hitbox = sfTrue;
     sfRectangleShape_setFillColor(airplane->shape, sfTransparent);
     sfRectangleShape_setOutlineColor(airplane->shape, color);
     sfRectangleShape_setOutlineThickness(airplane->shape, 2);
-}
-
-static void init_default_airplane_value(airplane_t *airplane)
-{
-    airplane->angle = 0;
-    airplane->rotate_offset = 0;
-    airplane->rotation_clock = sfClock_create();
-    airplane->delay_clock = sfClock_create();
-    airplane->move_clock = sfClock_create();
-    airplane->head_for_arrival_clock = sfClock_create();
-    airplane->delay_before_readjustement = 0;
-    airplane->rotate_side = 0;
-    airplane->take_off = sfFalse;
-    airplane->land_on = sfFalse;
-    airplane->destroyed = sfFalse;
-    airplane->head_for_arrival = sfTrue;
-    airplane->on_tower_area = sfFalse;
 }
 
 airplane_t *create_airplane(char * const *infos)
@@ -54,8 +61,10 @@ airplane_t *create_airplane(char * const *infos)
     airplane->arrival.y = my_getnbr(infos[4]);
     airplane->speed = (float)my_getnbr(infos[5]) / 100.0;
     airplane->delay = my_getnbr(infos[6]);
-    init_airplane_shape(airplane);
-    init_default_airplane_value(airplane);
-    set_direction_to_arrival(airplane);
+    if (handle_creation_error(&airplane)) {
+        init_airplane_shape(airplane);
+        init_default_airplane_value(airplane);
+        set_direction_to_arrival(airplane);
+    }
     return (airplane);
 }
