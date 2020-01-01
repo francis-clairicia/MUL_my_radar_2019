@@ -38,13 +38,11 @@ static void init_default_values(tower_t *tower, sfVector2f pos)
 tower_t *create_tower(char * const *infos)
 {
     tower_t *tower = malloc(sizeof(tower_t));
-    sfVector2f pos;
+    sfVector2f pos = {my_getnbr(infos[1]), my_getnbr(infos[2])};
 
     if (tower == NULL)
         return (NULL);
     tower->object = create_object(TOWER);
-    pos.x = my_getnbr(infos[1]);
-    pos.y = my_getnbr(infos[2]);
     tower->radius = 1920.0 * ((float)my_getnbr(infos[3]) / 100.0);
     tower->area = sfCircleShape_create();
     tower->show_area = sfTrue;

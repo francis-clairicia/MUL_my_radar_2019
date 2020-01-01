@@ -32,11 +32,14 @@ sfBool shape_intersection(sfRectangleShape *shape_A, sfRectangleShape *shape_B)
     sfVector2f points_A[4];
     sfVector2f edges_B[4];
     sfVector2f points_B[4];
+    sfBool (*collision)(sfVector2f *, sfVector2f *, sfVector2f *);
 
     get_edges(edges_A, points_A, shape_A);
     get_edges(edges_B, points_B, shape_B);
-    if (separating_axis_method(edges_A, points_A, points_B) == 1
-    || separating_axis_method(edges_B, points_B, points_A) == 1)
+    collision = separating_axis_method;
+    if (collision(edges_A, points_A, points_B))
+        return (sfTrue);
+    if (collision(edges_B, points_B, points_A))
         return (sfTrue);
     return (sfFalse);
 }

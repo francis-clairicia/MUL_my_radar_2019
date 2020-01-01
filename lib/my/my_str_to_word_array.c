@@ -8,22 +8,30 @@
 #include <stdlib.h>
 #include "my.h"
 
+static int is_alphanum(char c)
+{
+    if (my_find_char("0123456789", c) >= 0)
+        return (1);
+    if (my_find_char("abcdefghijklmnopqrstuvwxyz", c) >= 0)
+        return (1);
+    if (my_find_char("ABCDEFGHIJKLMNOPQRSTUVWXYZ", c) >= 0)
+        return (1);
+    return (0);
+}
+
 int get_nb_words(char const *str)
 {
     int nb = 1;
     int i = 0;
-    int j = 0;
 
     while (str[i] != '\0') {
-        j = i;
-        i += 1;
-        if (my_find_char("0123456789", str[j]) >= 0)
+        if (is_alphanum(str[i])) {
+            i += 1;
             continue;
-        if (my_find_char("abcdefghijklmnopqrstuvwxyz", str[j]) >= 0)
-            continue;
-        if (my_find_char("ABCDEFGHIJKLMNOPQRSTUVWXYZ", str[j]) >= 0)
-            continue;
+        }
         nb += 1;
+        while (!is_alphanum(str[i]))
+            i += 1;
     }
     return (nb);
 }
@@ -31,18 +39,12 @@ int get_nb_words(char const *str)
 int get_index_end_word(char const *str)
 {
     int i = 0;
-    int j = 0;
 
     while (str[i] != '\0') {
-        j = i;
-        i += 1;
-        if (my_find_char("0123456789", str[j]) >= 0)
-            continue;
-        if (my_find_char("abcdefghijklmnopqrstuvwxyz", str[j]) >= 0)
-            continue;
-        if (my_find_char("ABCDEFGHIJKLMNOPQRSTUVWXYZ", str[j]) >= 0)
-            continue;
-        return (j);
+        if (is_alphanum(str[i]))
+            i += 1;
+        else
+            break;
     }
     return (i);
 }
@@ -55,7 +57,10 @@ void generate_array(char **array, char const *str, int nb_words)
     while (i < nb_words) {
         index_word = get_index_end_word(str);
         array[i] = my_strndup(str, index_word);
-        str = &str[index_word + 1];
+        index_word += 1;
+        while (!is_alphanum(str[index_word]))
+            index_word += 1;
+        str = &str[index_word];
         i += 1;
     }
 }

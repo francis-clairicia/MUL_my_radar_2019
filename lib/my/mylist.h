@@ -24,7 +24,7 @@ int my_put_in_list(list_t **list, long data);
 int my_append_to_list(list_t **list, long data);
 void my_concat_list(list_t **begin1, list_t *begin2);
 void my_free_list(list_t **list, int free_ptr);
-void my_rev_list(list_t **begin);
+void my_rev_list(list_t *begin);
 char *my_list_to_str(list_t *list);
 char *my_concat_str_list(list_t *begin, char separator, int *len);
 list_t *my_node(list_t *begin, int index);

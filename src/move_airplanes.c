@@ -27,8 +27,12 @@ static void move_airplane(airplane_t *airplane)
     }
 }
 
-static sfBool airplane_can_move(airplane_t *airplane)
+static sfBool airplane_can_move(airplane_t *airplane, sfBool first_call)
 {
+    if (first_call) {
+        sfClock_restart(airplane->move_clock);
+        sfClock_restart(airplane->delay_clock);
+    }
     if (!(airplane->take_off)) {
         if (elapsed_time(airplane->delay * 1000, airplane->delay_clock))
             airplane->take_off = sfTrue;
@@ -40,6 +44,7 @@ static sfBool airplane_can_move(airplane_t *airplane)
 
 void move_airplanes(list_t *airplanes)
 {
+    static sfBool first_call = sfTrue;
     airplane_t *airplane;
 
     while (airplanes != NULL) {
@@ -47,7 +52,8 @@ void move_airplanes(list_t *airplanes)
         airplanes = airplanes->next;
         if (airplane == NULL)
             continue;
-        if (airplane_can_move(airplane))
+        if (airplane_can_move(airplane, first_call))
             move_airplane(airplane);
     }
+    first_call = sfFalse;
 }

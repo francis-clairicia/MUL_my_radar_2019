@@ -5,17 +5,22 @@
 ** Reverse a linked list
 */
 
-#include <mylist.h>
+#include "mylist.h"
 
-void my_rev_list(list_t **begin)
+void my_rev_list(list_t *begin)
 {
-    list_t *new_list = NULL;
-    list_t *node = *begin;
+    int i = 0;
+    long data_list[my_list_size(begin) + 1];
+    list_t *node = begin;
 
     while (node != NULL) {
-        my_put_in_list(&new_list, node->data);
+        data_list[i] = node->data;
         node = node->next;
+        i += 1;
     }
-    my_free_list(begin, 0);
-    *begin = new_list;
+    while (begin != NULL) {
+        i -= 1;
+        begin->data = data_list[i];
+        begin = begin->next;
+    }
 }

@@ -28,7 +28,6 @@ static void print_fps(sfRenderWindow *window, int fps)
     char *str_fps = get_fps(fps);
     sfText *text;
     sfFont *font;
-    sfVector2f pos = {20, 10};
 
     if (str_fps == NULL)
         return;
@@ -38,7 +37,7 @@ static void print_fps(sfRenderWindow *window, int fps)
         sfText_setFont(text, font);
         sfText_setString(text, str_fps);
         sfText_setCharacterSize(text, 50);
-        sfText_setPosition(text, pos);
+        sfText_setPosition(text, (sfVector2f){20, 10});
         sfRenderWindow_drawText(window, text, NULL);
     }
     sfText_destroy(text);

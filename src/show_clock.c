@@ -38,15 +38,11 @@ static sfBool text_width(sfText *text)
 
 static void init_text(sfText *text, sfFont *font, char const *str)
 {
-    sfVector2f origin = {0, 0};
-    sfVector2f pos = {1920, 10};
-
     sfText_setFont(text, font);
     sfText_setString(text, str);
     sfText_setCharacterSize(text, 50);
-    origin.x = text_width(text);
-    sfText_setOrigin(text, origin);
-    sfText_setPosition(text, pos);
+    sfText_setOrigin(text, (sfVector2f){text_width(text), 0});
+    sfText_setPosition(text, (sfVector2f){1920, 10});
 }
 
 void show_clock(sfRenderWindow *window, sfClock *clock)

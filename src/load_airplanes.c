@@ -29,22 +29,18 @@ static void init_default_airplane_value(airplane_t *airplane)
     airplane->land_on = sfFalse;
     airplane->destroyed = sfFalse;
     airplane->on_tower_area = sfFalse;
+    airplane->show_sprite = sfTrue;
+    airplane->show_hitbox = sfTrue;
 }
 
-static void init_airplane_shape(airplane_t *airplane)
+static void init_airplane_shape(sfRectangleShape *shape, sfVector2f default_pos)
 {
-    sfVector2f shape_size = {20, 20};
-    sfVector2f origin = {10, 10};
-    sfColor color = {46, 173, 46, 255};
-
-    sfRectangleShape_setSize(airplane->shape, shape_size);
-    airplane->show_sprite = sfTrue;
-    sfRectangleShape_setOrigin(airplane->shape, origin);
-    sfRectangleShape_setPosition(airplane->shape, airplane->departure);
-    airplane->show_hitbox = sfTrue;
-    sfRectangleShape_setFillColor(airplane->shape, sfTransparent);
-    sfRectangleShape_setOutlineColor(airplane->shape, color);
-    sfRectangleShape_setOutlineThickness(airplane->shape, 2);
+    sfRectangleShape_setSize(shape, (sfVector2f){20, 20});
+    sfRectangleShape_setOrigin(shape, (sfVector2f){10, 10});
+    sfRectangleShape_setPosition(shape, default_pos);
+    sfRectangleShape_setFillColor(shape, sfTransparent);
+    sfRectangleShape_setOutlineColor(shape, (sfColor){46, 173, 46, 255});
+    sfRectangleShape_setOutlineThickness(shape, 2);
 }
 
 airplane_t *create_airplane(char * const *infos)
@@ -62,7 +58,7 @@ airplane_t *create_airplane(char * const *infos)
     airplane->speed = (float)my_getnbr(infos[5]) / 100.0;
     airplane->delay = my_getnbr(infos[6]);
     if (handle_creation_error(&airplane)) {
-        init_airplane_shape(airplane);
+        init_airplane_shape(airplane->shape, airplane->departure);
         init_default_airplane_value(airplane);
         set_direction_to_arrival(airplane);
     }
