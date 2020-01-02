@@ -10,6 +10,8 @@ MAIN		=	main.c
 SRC_DIR		=	src
 
 SRC_NO_TEST	=	$(SRC_DIR)/my_radar.c							\
+				$(SRC_DIR)/analyse_event.c						\
+				$(SRC_DIR)/print_result.c						\
 				$(SRC_DIR)/show_clock.c							\
 				$(SRC_DIR)/show_fps.c							\
 				$(SRC_DIR)/load_airplanes_towers.c				\

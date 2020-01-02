@@ -56,9 +56,11 @@ typedef struct control_tower
 void my_radar(sfRenderWindow *window, char const *script);
 int valid_script(char const *script_path);
 int error_script(char const *script);
+void analyse_event(sfRenderWindow *window, list_t *airplanes, list_t *towers);
+void print_result(list_t *airplanes);
 void event_switch_sprite(sfKeyEvent event, list_t *airplanes, list_t *towers);
-void show_clock(sfRenderWindow *window, sfClock *clock);
-void show_fps(sfRenderWindow *window, sfClock *clock);
+void show_clock(sfRenderWindow *window, sfClock *clock, sfText *text);
+void show_fps(sfRenderWindow *window, sfClock *clock, sfText *text);
 
 void load_airplanes_towers(list_t **airplanes, list_t **towers,
     char const *script);
