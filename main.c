@@ -74,8 +74,10 @@ int main(int ac, char **av, char **envp)
         window = create_window("My Radar", 1920, 1080);
         my_radar(window, script);
         sfRenderWindow_destroy(window);
-    } else
+    } else {
+        my_putstr("./my_radar: bad arguments: invalid script content\n");
         output = 84;
+    }
     free(script);
     return (output);
 }
